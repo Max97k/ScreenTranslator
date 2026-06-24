@@ -205,12 +205,23 @@ def apply_cmd_env(cmd):
     """Run cmd and apply its modified environment"""
     print('>> Applying env after', cmd)
     separator = 'env follows'
-    script = 'import os,sys;sys.stdout.buffer.write(str(dict(os.environ)).encode(\\\"utf-8\\\"))'
-    env = sub.run('{} && echo "{}" && python -c "{}"'.format(cmd, separator, script),
-                  shell=True, stdout=sub.PIPE, encoding='utf-8')
+    script = "import os,sys;sys.stdout.buffer.write(str(dict(os.environ)).encode('utf-8'))"
+    if platform.system() == "Windows":
+        cmd_line = f'cmd.exe /s /c "{cmd} && echo {separator} && python -c \"{script}\""'
+        env = sub.run(cmd_line, shell=False, stdout=sub.PIPE, stderr=sub.PIPE, encoding='utf-8')
+    else:
+        env = sub.run('{} && echo "{}" && python -c "{}"'.format(cmd, separator, script),
+                      shell=True, stdout=sub.PIPE, stderr=sub.PIPE, encoding='utf-8')
 
-    stringed = env.stdout[env.stdout.index(separator) + len(separator) + 1:]
-    parsed = ast.literal_eval(stringed)
+    try:
+        idx = env.stdout.index(separator)
+        stringed = env.stdout[idx + len(separator) + 1:]
+        parsed = ast.literal_eval(stringed)
+    except ValueError as e:
+        print("ERROR: Failed to apply environment after command:", cmd)
+        print("STDOUT:", env.stdout)
+        print("STDERR:", env.stderr)
+        raise e
 
     for key, value in parsed.items():
         if key in os.environ and os.environ[key] == value:
