@@ -1,4 +1,4 @@
-QT = core gui widgets network webenginewidgets
+QT = core gui widgets network
 
 TARGET = screen-translator
 TEMPLATE = app
@@ -8,7 +8,7 @@ DEPS_DIR=$$(ST_DEPS_DIR)
 isEmpty(DEPS_DIR):DEPS_DIR=$$PWD/../deps
 INCLUDEPATH += $$DEPS_DIR/include
 LIBS += -L$$DEPS_DIR/lib
-LIBS += -lhunspell -lleptonica -ltesseract
+LIBS += -lhunspell -lleptonica
 
 win32{
   LIBS += -lUser32
@@ -45,7 +45,6 @@ HEADERS += \
   src/manager.h \
   src/ocr/recognizer.h \
   src/ocr/recognizerworker.h \
-  src/ocr/tesseract.h \
   src/represent/representer.h \
   src/represent/resulteditor.h \
   src/represent/resultwidget.h \
@@ -65,8 +64,6 @@ HEADERS += \
   src/substitutionstable.h \
   src/task.h \
   src/translate/translator.h \
-  src/translate/webpage.h \
-  src/translate/webpageproxy.h \
   src/trayicon.h
 
 SOURCES += \
@@ -83,7 +80,6 @@ SOURCES += \
   src/manager.cpp \
   src/ocr/recognizer.cpp \
   src/ocr/recognizerworker.cpp \
-  src/ocr/tesseract.cpp \
   src/represent/representer.cpp \
   src/represent/resulteditor.cpp \
   src/represent/resultwidget.cpp \
@@ -101,8 +97,6 @@ SOURCES += \
   src/settingsvalidator.cpp \
   src/substitutionstable.cpp \
   src/translate/translator.cpp \
-  src/translate/webpage.cpp \
-  src/translate/webpageproxy.cpp \
   src/trayicon.cpp
 
 RESOURCES += \
