@@ -4,8 +4,23 @@
 # Qt creator user settings
 *.user
 
+# Build and deployment outputs
 *.exe
 distr/content/
+build/
+deps/
+qt/
+ssl/
+Win_x64/
+hunspell-1.7.0/
+hunspell_src/
+5.15.2/
 
+# Archives, logs and metadata
 *.tar.gz
-__pycache__
+*.7z
+*.zip
+*.log
+Updates-*.xml
+__pycache__/
+
