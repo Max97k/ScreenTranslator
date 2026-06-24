@@ -168,6 +168,10 @@ def get_msvc_env_cmd(bitness='64', msvc_version=''):
     if platform.system() != "Windows":
         return None
 
+    if which('cl.exe') or which('cl'):
+        print('>> cl.exe is already in PATH, skipping environment setup')
+        return None
+
     env_script = os.path.normpath(msvc_version + '/VC/Auxiliary/Build/vcvars{}.bat'.format(bitness))
     return '"' + env_script + '"'
 
@@ -203,6 +207,8 @@ def ensure_got_path(path):
 
 def apply_cmd_env(cmd):
     """Run cmd and apply its modified environment"""
+    if not cmd:
+        return
     print('>> Applying env after', cmd)
     separator = 'env follows'
     script = "import os,sys;sys.stdout.buffer.write(str(dict(os.environ)).encode('utf-8'))"
