@@ -24,3 +24,6 @@ hunspell_src/
 Updates-*.xml
 __pycache__/
 
+# Jules API outputs and temporary downloads
+jules_out.txt
+DownloadedApp/

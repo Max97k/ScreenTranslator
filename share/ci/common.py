@@ -168,7 +168,7 @@ def get_msvc_env_cmd(bitness='64', msvc_version=''):
     if platform.system() != "Windows":
         return None
 
-    env_script = msvc_version + '/VC/Auxiliary/Build/vcvars{}.bat'.format(bitness)
+    env_script = os.path.normpath(msvc_version + '/VC/Auxiliary/Build/vcvars{}.bat'.format(bitness))
     return '"' + env_script + '"'
 
 
