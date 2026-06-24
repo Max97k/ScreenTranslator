@@ -12,6 +12,7 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QScreen>
+#include <QPropertyAnimation>
 
 ResultWidget::ResultWidget(Manager &manager, Representer &representer,
                            const Settings &settings, QWidget *parent)
@@ -24,6 +25,8 @@ ResultWidget::ResultWidget(Manager &manager, Representer &representer,
   , separator_(new QLabel(this))
   , translated_(new QLabel(this))
   , contextMenu_(new QMenu(this))
+  , fadeAnimation_(new QPropertyAnimation(this, "windowOpacity", this))
+  , geometryAnimation_(new QPropertyAnimation(this, "geometry", this))
 {
   setWindowFlags(Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint |
                  Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
@@ -74,11 +77,52 @@ ResultWidget::ResultWidget(Manager &manager, Representer &representer,
   layout->setSpacing(0);
 
   updateSettings();
+
+  fadeAnimation_->setDuration(250);
+  fadeAnimation_->setEasingCurve(QEasingCurve::InOutQuad);
+  connect(fadeAnimation_, &QPropertyAnimation::finished, this, [this]() {
+    if (animatingHide_) {
+      animatingHide_ = false;
+      QFrame::setVisible(false);
+    }
+  });
+
+  geometryAnimation_->setDuration(300);
+  geometryAnimation_->setEasingCurve(QEasingCurve::OutCubic);
 }
 
 const TaskPtr &ResultWidget::task() const
 {
   return task_;
+}
+
+void ResultWidget::setVisible(bool visible)
+{
+  if (visible) {
+    if (animatingHide_) {
+      fadeAnimation_->stop();
+      animatingHide_ = false;
+    }
+
+    if (!isVisible()) {
+      setWindowOpacity(0.0);
+      QFrame::setVisible(true);
+    }
+
+    fadeAnimation_->stop();
+    fadeAnimation_->setStartValue(windowOpacity());
+    fadeAnimation_->setEndValue(1.0);
+    fadeAnimation_->start();
+  } else {
+    if (!isVisible() || animatingHide_)
+      return;
+
+    animatingHide_ = true;
+    fadeAnimation_->stop();
+    fadeAnimation_->setStartValue(windowOpacity());
+    fadeAnimation_->setEndValue(0.0);
+    fadeAnimation_->start();
+  }
 }
 
 void ResultWidget::show(const TaskPtr &task)
@@ -105,18 +149,18 @@ void ResultWidget::show(const TaskPtr &task)
   const auto mustShowRecognized = settings_.showRecognized || !gotTranslation;
   recognized_->setVisible(mustShowRecognized);
 
-  show();
   adjustSize();
 
+  auto targetSize = size();
   // window should not be smaller than selected image
   if (!imagePlaceholder_->isVisible())
-    resize(std::max(width(), task->captured.width()),
-           std::max(height(), task->captured.height()));
+    targetSize = QSize(std::max(targetSize.width(), task->captured.width()),
+                       std::max(targetSize.height(), task->captured.height()));
 
   // if window is wider than image then image should be at horizontal center
   const auto correctionToCenterImage =
-      QPoint((width() - task->captured.width()) / 2, 2 * lineWidth());
-  auto rect = QRect(task->capturePoint - correctionToCenterImage, size());
+      QPoint((targetSize.width() - task->captured.width()) / 2, 2 * lineWidth());
+  auto rect = QRect(task->capturePoint - correctionToCenterImage, targetSize);
 
   auto screen = QApplication::screenAt(task->capturePoint);
   SOFT_ASSERT(screen, return );
@@ -153,7 +197,16 @@ void ResultWidget::show(const TaskPtr &task)
     layout->insertWidget(++index, translated_);
   }
 
-  move(rect.topLeft());
+  if (isVisible() && !animatingHide_) {
+    geometryAnimation_->stop();
+    geometryAnimation_->setStartValue(geometry());
+    geometryAnimation_->setEndValue(rect);
+    geometryAnimation_->start();
+  } else {
+    setGeometry(rect);
+  }
+
+  show();
 
   activateWindow();
 }

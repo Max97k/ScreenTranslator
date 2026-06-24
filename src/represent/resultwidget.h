@@ -6,6 +6,7 @@
 
 class QLabel;
 class QMenu;
+class QPropertyAnimation;
 
 class ResultWidget : public QFrame
 {
@@ -18,6 +19,8 @@ public:
   void show(const TaskPtr& task);
   using QWidget::show;
   void updateSettings();
+
+  void setVisible(bool visible) override;
 
 protected:
   void mousePressEvent(QMouseEvent* event) override;
@@ -38,4 +41,8 @@ private:
   QLabel* translated_;
   QMenu* contextMenu_;
   QPoint lastPos_;
+
+  QPropertyAnimation* fadeAnimation_;
+  QPropertyAnimation* geometryAnimation_;
+  bool animatingHide_{false};
 };
