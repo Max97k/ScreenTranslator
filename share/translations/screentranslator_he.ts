@@ -2,92 +2,56 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="he">
 <context>
-    <name>Updates</name>
+    <name>CaptureAreaEditor</name>
     <message>
-        <source>Gb</source>
-        <translation>Gb</translation>
+        <source>⇵</source>
+        <translation>⇵</translation>
     </message>
     <message>
-        <source>Kb</source>
-        <translation>Kb</translation>
+        <source>Save (can capture via hotkey)</source>
+        <translation>שמור (יכול ללכוד באמצעות מקש קיצור)</translation>
     </message>
     <message>
-        <source>Mb</source>
-        <translation>Mb</translation>
+        <source>Use auto corrections</source>
+        <translation>שימוש בתיקונים אוטומטיים</translation>
     </message>
     <message>
-        <source>Tb</source>
-        <translation>Tb</translation>
+        <source>Translate:</source>
+        <translation>תרגום:</translation>
     </message>
     <message>
-        <source>bytes</source>
-        <translation>bytes</translation>
+        <source>Recognize:</source>
+        <translation>זהה:</translation>
+    </message>
+</context>
+<context>
+    <name>CaptureAreaSelector</name>
+    <message>
+        <source>Cancel</source>
+        <translation>ביטול</translation>
     </message>
     <message>
-        <source>Install/Update</source>
-        <translation>התקנה/עדכון</translation>
+        <source>Capture all</source>
+        <translation>תפוס הכל</translation>
     </message>
     <message>
-        <source>Failed to remove file
-%1
-Error %2</source>
-        <translation>הסרת הקובץ
-%1
-שגיאה %2 נכשלה</translation>
+        <source>Right click on selection - customize
+Left click on selection - process
+Enter - process all selections
+Esc - cancel
+Ctrl - keep selecting</source>
+        <translation>לחיצה ימנית על בחירה - התאמה אישית
+לחיצה שמאלית על בחירה - תהליך
+Enter - עיבוד כל הבחירות
+Esc - ביטול
+Ctrl - המשך בחירה</translation>
     </message>
+</context>
+<context>
+    <name>CorrectorWorker</name>
     <message>
-        <source>Failed to copy file
-%1
-to %2
-Error %3</source>
-        <translation>נכשלה העתקת הקובץ
-%1
-ל- %2
-שגיאה %3</translation>
-    </message>
-    <message>
-        <source>Failed to create temp file
-%1
-Error %2</source>
-        <translation>נכשלה יצירת הקובץ הזמני
-%1
-שגיאה %2</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>הסר</translation>
-    </message>
-    <message>
-        <source>Up to date</source>
-        <translation>מעודכן</translation>
-    </message>
-    <message>
-        <source>Failed to write to temp file
-%1
-Error %2</source>
-        <translation>נכשלה הכתיבה לקובץ הזמני
-%1
-שגיאה %2</translation>
-    </message>
-    <message>
-        <source>Failed to create path
-%1</source>
-        <translation>נכשלה יצירת הנתיב
-%1</translation>
-    </message>
-    <message>
-        <source>Update available</source>
-        <translation>עדכון זמין</translation>
-    </message>
-    <message>
-        <source>Directory is not writable
-%1</source>
-        <translation>הספרייה אינה ניתנת לכתיבה
-%1</translation>
-    </message>
-    <message>
-        <source>Not installed</source>
-        <translation>לא מותקן</translation>
+        <source>Failed to init hunspell engine: %1</source>
+        <translation>הפעלת מנוע hunspell נכשלה: %1</translation>
     </message>
 </context>
 <context>
@@ -378,7 +342,7 @@ Check for updates to silence this warning</source>
     </message>
     <message>
         <source>init failed</source>
-        <translation>init נכשל</translation>
+        <translation type="vanished">init נכשל</translation>
     </message>
     <message>
         <source>Esperanto</source>
@@ -608,7 +572,7 @@ Check for updates to silence this warning</source>
     </message>
     <message>
         <source>unknown translation languages: %1 or %2</source>
-        <translation>שפות תרגום לא ידועות: %1 או %2</translation>
+        <translation type="vanished">שפות תרגום לא ידועות: %1 או %2</translation>
     </message>
     <message>
         <source>recognizers</source>
@@ -658,28 +622,91 @@ Check for updates to silence this warning</source>
         <source>Yiddish</source>
         <translation>יידיש</translation>
     </message>
+    <message>
+        <source>Language not supported by Windows OCR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to create OCR engine for language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Windows OCR is only supported on Windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OCR engine not initialized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error during WinOcr recognize</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>CaptureAreaEditor</name>
+    <name>RecognizeWorker</name>
     <message>
-        <source>⇵</source>
-        <translation>⇵</translation>
+        <source>Failed to init OCR engine: %1</source>
+        <translation>מנוע זיהוי תווים אופטי (OCR) נכשל: %1</translation>
     </message>
+</context>
+<context>
+    <name>Recognizer</name>
     <message>
-        <source>Save (can capture via hotkey)</source>
-        <translation>שמור (יכול ללכוד באמצעות מקש קיצור)</translation>
+        <source>No source language set. Check settings</source>
+        <translation>לא נקבעה שפת מקור. בדוק הגדרות</translation>
     </message>
-    <message>
-        <source>Use auto corrections</source>
-        <translation>שימוש בתיקונים אוטומטיים</translation>
-    </message>
+</context>
+<context>
+    <name>ResultEditor</name>
     <message>
         <source>Translate:</source>
-        <translation>תרגום:</translation>
+        <translation>תרגם:</translation>
     </message>
     <message>
         <source>Recognize:</source>
         <translation>זהה:</translation>
+    </message>
+    <message>
+        <source>Translate</source>
+        <translation>תרגם</translation>
+    </message>
+    <message>
+        <source>Recognize</source>
+        <translation>זיהוי</translation>
+    </message>
+    <message>
+        <source>Recognize and translate</source>
+        <translation>זיהוי ותרגום</translation>
+    </message>
+</context>
+<context>
+    <name>ResultWidget</name>
+    <message>
+        <source>Repeat capture</source>
+        <translation>לכידה חוזרת</translation>
+    </message>
+    <message>
+        <source>Copy text</source>
+        <translation>העתק טקסט</translation>
+    </message>
+    <message>
+        <source>New capture</source>
+        <translation>לכידה חדשה</translation>
+    </message>
+    <message>
+        <source>Copy image</source>
+        <translation>העתק תמונה</translation>
+    </message>
+    <message>
+        <source>Edit...</source>
+        <translation>ערוך...</translation>
+    </message>
+    <message>
+        <source>Without correction:
+</source>
+        <translation>ללא תיקון
+</translation>
     </message>
 </context>
 <context>
@@ -972,6 +999,243 @@ Hunspell מחפש מילים הדומות למילים המוכרות במילו
         <source>Tessdata path:</source>
         <translation>נתיב Tessdata:</translation>
     </message>
+    <message>
+        <source>Google Cloud API Key:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SubstitutionsTable</name>
+    <message>
+        <source>Source</source>
+        <translation>מקור</translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation>שפה</translation>
+    </message>
+    <message>
+        <source>Changed</source>
+        <translation>השתנה</translation>
+    </message>
+</context>
+<context>
+    <name>Translator</name>
+    <message>
+        <source>Url:</source>
+        <translation type="vanished">כתובת אינטרנט:</translation>
+    </message>
+    <message>
+        <source>Debug</source>
+        <translation type="vanished">ניפוי באגים</translation>
+    </message>
+    <message>
+        <source>Translator</source>
+        <translation type="vanished">מתרגם</translation>
+    </message>
+    <message>
+        <source>Load images</source>
+        <translation type="vanished">טוען תמונות</translation>
+    </message>
+    <message>
+        <source>All translators failed
+%1</source>
+        <translation type="vanished">כל המתרגמים נכשלו
+%1</translation>
+    </message>
+    <message>
+        <source>No translators loaded from
+%1
+(%2)</source>
+        <translation type="vanished">לא נטענו מתרגמים מ
+%1
+(%2)</translation>
+    </message>
+    <message>
+        <source>Error: Google Cloud API Key is empty. Please configure it in Settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>API Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Empty translation result.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TrayIcon</name>
+    <message>
+        <source>Quit</source>
+        <translation>יציאה</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>הצג</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>שגיאה</translation>
+    </message>
+    <message>
+        <source>Show translator</source>
+        <translation type="vanished">הצג מתרגם</translation>
+    </message>
+    <message>
+        <source>Result</source>
+        <translation>תוצאה</translation>
+    </message>
+    <message>
+        <source>To clipboard</source>
+        <translation>ללוח</translation>
+    </message>
+    <message>
+        <source>Repeat capture</source>
+        <translation>לכד שוב</translation>
+    </message>
+    <message>
+        <source>Capture saved areas</source>
+        <translation>לכידה שנשמרה</translation>
+    </message>
+    <message>
+        <source>Capture</source>
+        <translation>לכד</translation>
+    </message>
+    <message>
+        <source>Failed to register global shortcuts:
+%1
+Most likely they are already in use by another program</source>
+        <translation>הרישום של קיצורי דרך כלליים נכשל:
+%1
+סביר להניח שהם כבר בשימוש על ידי תוכנית אחרת</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>הגדרות</translation>
+    </message>
+</context>
+<context>
+    <name>Updates</name>
+    <message>
+        <source>Gb</source>
+        <translation>Gb</translation>
+    </message>
+    <message>
+        <source>Kb</source>
+        <translation>Kb</translation>
+    </message>
+    <message>
+        <source>Mb</source>
+        <translation>Mb</translation>
+    </message>
+    <message>
+        <source>Tb</source>
+        <translation>Tb</translation>
+    </message>
+    <message>
+        <source>bytes</source>
+        <translation>bytes</translation>
+    </message>
+    <message>
+        <source>Install/Update</source>
+        <translation>התקנה/עדכון</translation>
+    </message>
+    <message>
+        <source>Failed to remove file
+%1
+Error %2</source>
+        <translation>הסרת הקובץ
+%1
+שגיאה %2 נכשלה</translation>
+    </message>
+    <message>
+        <source>Failed to copy file
+%1
+to %2
+Error %3</source>
+        <translation>נכשלה העתקת הקובץ
+%1
+ל- %2
+שגיאה %3</translation>
+    </message>
+    <message>
+        <source>Failed to create temp file
+%1
+Error %2</source>
+        <translation>נכשלה יצירת הקובץ הזמני
+%1
+שגיאה %2</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>הסר</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>מעודכן</translation>
+    </message>
+    <message>
+        <source>Failed to write to temp file
+%1
+Error %2</source>
+        <translation>נכשלה הכתיבה לקובץ הזמני
+%1
+שגיאה %2</translation>
+    </message>
+    <message>
+        <source>Failed to create path
+%1</source>
+        <translation>נכשלה יצירת הנתיב
+%1</translation>
+    </message>
+    <message>
+        <source>Update available</source>
+        <translation>עדכון זמין</translation>
+    </message>
+    <message>
+        <source>Directory is not writable
+%1</source>
+        <translation>הספרייה אינה ניתנת לכתיבה
+%1</translation>
+    </message>
+    <message>
+        <source>Not installed</source>
+        <translation>לא מותקן</translation>
+    </message>
+</context>
+<context>
+    <name>WebPage</name>
+    <message>
+        <source>timed out</source>
+        <translation type="vanished">תם הזמן הקצוב</translation>
+    </message>
+</context>
+<context>
+    <name>service::KeySequenceEdit</name>
+    <message>
+        <source>Press shortcut</source>
+        <translation>לחץ על קיצור דרך</translation>
+    </message>
+</context>
+<context>
+    <name>update::Loader</name>
+    <message>
+        <source>Empty data downloaded from
+%1</source>
+        <translation>נתונים ריקים הורדו מ-
+%1</translation>
+    </message>
+    <message>
+        <source>Failed to download file
+%1. Error %2</source>
+        <translation>הורדת הקובץ נכשלה
+%1. שגיאה %2</translation>
+    </message>
 </context>
 <context>
     <name>update::Model</name>
@@ -1009,223 +1273,6 @@ Hunspell מחפש מילים הדומות למילים המוכרות במילו
     </message>
 </context>
 <context>
-    <name>TrayIcon</name>
-    <message>
-        <source>Quit</source>
-        <translation>יציאה</translation>
-    </message>
-    <message>
-        <source>Show</source>
-        <translation>הצג</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>שגיאה</translation>
-    </message>
-    <message>
-        <source>Show translator</source>
-        <translation>הצג מתרגם</translation>
-    </message>
-    <message>
-        <source>Result</source>
-        <translation>תוצאה</translation>
-    </message>
-    <message>
-        <source>To clipboard</source>
-        <translation>ללוח</translation>
-    </message>
-    <message>
-        <source>Repeat capture</source>
-        <translation>לכד שוב</translation>
-    </message>
-    <message>
-        <source>Capture saved areas</source>
-        <translation>לכידה שנשמרה</translation>
-    </message>
-    <message>
-        <source>Capture</source>
-        <translation>לכד</translation>
-    </message>
-    <message>
-        <source>Failed to register global shortcuts:
-%1
-Most likely they are already in use by another program</source>
-        <translation>הרישום של קיצורי דרך כלליים נכשל:
-%1
-סביר להניח שהם כבר בשימוש על ידי תוכנית אחרת</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>הגדרות</translation>
-    </message>
-</context>
-<context>
-    <name>Translator</name>
-    <message>
-        <source>Url:</source>
-        <translation>כתובת אינטרנט:</translation>
-    </message>
-    <message>
-        <source>Debug</source>
-        <translation>ניפוי באגים</translation>
-    </message>
-    <message>
-        <source>Translator</source>
-        <translation>מתרגם</translation>
-    </message>
-    <message>
-        <source>Load images</source>
-        <translation>טוען תמונות</translation>
-    </message>
-    <message>
-        <source>All translators failed
-%1</source>
-        <translation>כל המתרגמים נכשלו
-%1</translation>
-    </message>
-    <message>
-        <source>No translators loaded from
-%1
-(%2)</source>
-        <translation>לא נטענו מתרגמים מ
-%1
-(%2)</translation>
-    </message>
-</context>
-<context>
-    <name>RecognizeWorker</name>
-    <message>
-        <source>Failed to init OCR engine: %1</source>
-        <translation>מנוע זיהוי תווים אופטי (OCR) נכשל: %1</translation>
-    </message>
-</context>
-<context>
-    <name>WebPage</name>
-    <message>
-        <source>timed out</source>
-        <translation>תם הזמן הקצוב</translation>
-    </message>
-</context>
-<context>
-    <name>CaptureAreaSelector</name>
-    <message>
-        <source>Cancel</source>
-        <translation>ביטול</translation>
-    </message>
-    <message>
-        <source>Capture all</source>
-        <translation>תפוס הכל</translation>
-    </message>
-    <message>
-        <source>Right click on selection - customize
-Left click on selection - process
-Enter - process all selections
-Esc - cancel
-Ctrl - keep selecting</source>
-        <translation>לחיצה ימנית על בחירה - התאמה אישית
-לחיצה שמאלית על בחירה - תהליך
-Enter - עיבוד כל הבחירות
-Esc - ביטול
-Ctrl - המשך בחירה</translation>
-    </message>
-</context>
-<context>
-    <name>update::Loader</name>
-    <message>
-        <source>Empty data downloaded from
-%1</source>
-        <translation>נתונים ריקים הורדו מ-
-%1</translation>
-    </message>
-    <message>
-        <source>Failed to download file
-%1. Error %2</source>
-        <translation>הורדת הקובץ נכשלה
-%1. שגיאה %2</translation>
-    </message>
-</context>
-<context>
-    <name>SubstitutionsTable</name>
-    <message>
-        <source>Source</source>
-        <translation>מקור</translation>
-    </message>
-    <message>
-        <source>Language</source>
-        <translation>שפה</translation>
-    </message>
-    <message>
-        <source>Changed</source>
-        <translation>השתנה</translation>
-    </message>
-</context>
-<context>
-    <name>ResultEditor</name>
-    <message>
-        <source>Translate:</source>
-        <translation>תרגם:</translation>
-    </message>
-    <message>
-        <source>Recognize:</source>
-        <translation>זהה:</translation>
-    </message>
-    <message>
-        <source>Translate</source>
-        <translation>תרגם</translation>
-    </message>
-    <message>
-        <source>Recognize</source>
-        <translation>זיהוי</translation>
-    </message>
-    <message>
-        <source>Recognize and translate</source>
-        <translation>זיהוי ותרגום</translation>
-    </message>
-</context>
-<context>
-    <name>ResultWidget</name>
-    <message>
-        <source>Repeat capture</source>
-        <translation>לכידה חוזרת</translation>
-    </message>
-    <message>
-        <source>Copy text</source>
-        <translation>העתק טקסט</translation>
-    </message>
-    <message>
-        <source>New capture</source>
-        <translation>לכידה חדשה</translation>
-    </message>
-    <message>
-        <source>Copy image</source>
-        <translation>העתק תמונה</translation>
-    </message>
-    <message>
-        <source>Edit...</source>
-        <translation>ערוך...</translation>
-    </message>
-    <message>
-        <source>Without correction:
-</source>
-        <translation>ללא תיקון
-</translation>
-    </message>
-</context>
-<context>
-    <name>CorrectorWorker</name>
-    <message>
-        <source>Failed to init hunspell engine: %1</source>
-        <translation>הפעלת מנוע hunspell נכשלה: %1</translation>
-    </message>
-</context>
-<context>
-    <name>service::KeySequenceEdit</name>
-    <message>
-        <source>Press shortcut</source>
-        <translation>לחץ על קיצור דרך</translation>
-    </message>
-</context>
-<context>
     <name>update::Updater</name>
     <message>
         <source>Empty data unpacked from
@@ -1236,13 +1283,6 @@ Ctrl - המשך בחירה</translation>
     <message>
         <source>Update all</source>
         <translation>עדכן הכל</translation>
-    </message>
-</context>
-<context>
-    <name>Recognizer</name>
-    <message>
-        <source>No source language set. Check settings</source>
-        <translation>לא נקבעה שפת מקור. בדוק הגדרות</translation>
     </message>
 </context>
 </TS>

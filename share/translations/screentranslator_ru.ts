@@ -616,69 +616,93 @@ Ctrl - продолжить выделять</translation>
         <translation>Любой язык</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="42"/>
+        <location filename="../../src/manager.cpp" line="43"/>
         <source>app</source>
         <translation>приложение</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="43"/>
+        <location filename="../../src/manager.cpp" line="44"/>
         <source>recognizers</source>
         <translation>распознавание</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="44"/>
+        <location filename="../../src/manager.cpp" line="45"/>
         <source>correction</source>
         <translation>коррекция</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="45"/>
+        <location filename="../../src/manager.cpp" line="46"/>
         <source>translators</source>
         <translation>перевод</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="60"/>
+        <location filename="../../src/manager.cpp" line="61"/>
         <source>Screen translator started</source>
         <translation>Экранный переводчик запущен</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="68"/>
+        <location filename="../../src/manager.cpp" line="69"/>
         <source>Updates available</source>
         <translation>Доступны обновления</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="96"/>
+        <location filename="../../src/manager.cpp" line="97"/>
         <source>Current version might be outdated.
 Check for updates to silence this warning</source>
         <translation>Текущая версия может быть устаревшей.
 Проверьте обновления, чтобы отключить это сообщение</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="129"/>
+        <location filename="../../src/manager.cpp" line="130"/>
         <source>Incorrect settings found. Go to Settings</source>
         <translation>Обнаружены некорректные настройки. Перейдите в Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="194"/>
+        <location filename="../../src/manager.cpp" line="195"/>
         <source>Failed to set log file: %1</source>
         <translation>Ошибка установки лог-файла: %1</translation>
     </message>
     <message>
-        <location filename="../../src/manager.cpp" line="200"/>
+        <location filename="../../src/manager.cpp" line="201"/>
         <source>Started logging to file: %1</source>
         <translation>Начата запись в лог-файл: %1</translation>
     </message>
     <message>
-        <location filename="../../src/translate/webpage.cpp" line="115"/>
         <source>unknown translation languages: %1 or %2</source>
-        <translation>неизвестные языки для перевода: %1 или %2</translation>
+        <translation type="vanished">неизвестные языки для перевода: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../../src/ocr/tesseract.cpp" line="234"/>
         <source>init failed</source>
-        <translation>ошибка инициалиизации</translation>
+        <translation type="vanished">ошибка инициалиизации</translation>
     </message>
     <message>
-        <location filename="../../src/ocr/tesseract.cpp" line="294"/>
+        <location filename="../../src/ocr/winocr.cpp" line="49"/>
+        <source>Language not supported by Windows OCR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ocr/winocr.cpp" line="56"/>
+        <source>Failed to create OCR engine for language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ocr/winocr.cpp" line="70"/>
+        <location filename="../../src/ocr/winocr.cpp" line="170"/>
+        <source>Windows OCR is only supported on Windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ocr/winocr.cpp" line="151"/>
+        <source>OCR engine not initialized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ocr/winocr.cpp" line="166"/>
+        <source>Unknown error during WinOcr recognize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ocr/winocr.cpp" line="174"/>
         <source>Failed to recognize text or no text selected</source>
         <translation>Ошибка распознавания текста или нет текста в выделенной зоне</translation>
     </message>
@@ -819,32 +843,32 @@ in %1</source>
 <context>
     <name>ResultWidget</name>
     <message>
-        <location filename="../../src/represent/resultwidget.cpp" line="45"/>
+        <location filename="../../src/represent/resultwidget.cpp" line="48"/>
         <source>Copy text</source>
         <translation>Скопировать текст</translation>
     </message>
     <message>
-        <location filename="../../src/represent/resultwidget.cpp" line="48"/>
+        <location filename="../../src/represent/resultwidget.cpp" line="51"/>
         <source>Copy image</source>
         <translation>Скопировать изображение</translation>
     </message>
     <message>
-        <location filename="../../src/represent/resultwidget.cpp" line="51"/>
+        <location filename="../../src/represent/resultwidget.cpp" line="54"/>
         <source>Edit...</source>
         <translation>Править...</translation>
     </message>
     <message>
-        <location filename="../../src/represent/resultwidget.cpp" line="57"/>
+        <location filename="../../src/represent/resultwidget.cpp" line="60"/>
         <source>New capture</source>
         <translation>Захват</translation>
     </message>
     <message>
-        <location filename="../../src/represent/resultwidget.cpp" line="60"/>
+        <location filename="../../src/represent/resultwidget.cpp" line="63"/>
         <source>Repeat capture</source>
         <translation>Повторить захват</translation>
     </message>
     <message>
-        <location filename="../../src/represent/resultwidget.cpp" line="95"/>
+        <location filename="../../src/represent/resultwidget.cpp" line="139"/>
         <source>Without correction:
 </source>
         <translation>Без коррекции:
@@ -948,7 +972,7 @@ in %1</source>
         <translation>Язык:</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="494"/>
+        <location filename="../../src/settingseditor.ui" line="507"/>
         <source> secs</source>
         <translation> сек</translation>
     </message>
@@ -1008,47 +1032,52 @@ in %1</source>
         <translation>Переводчики</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="559"/>
+        <location filename="../../src/settingseditor.ui" line="468"/>
+        <source>Google Cloud API Key:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/settingseditor.ui" line="572"/>
         <source>Result window</source>
         <translation>Окно результата</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="565"/>
+        <location filename="../../src/settingseditor.ui" line="578"/>
         <source>Font:</source>
         <translation>Шрифт:</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="575"/>
+        <location filename="../../src/settingseditor.ui" line="588"/>
         <source>Font size:</source>
         <translation>Размер шрифта:</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="592"/>
+        <location filename="../../src/settingseditor.ui" line="605"/>
         <source>Font color:</source>
         <translation>Цвет шрифта:</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="606"/>
+        <location filename="../../src/settingseditor.ui" line="619"/>
         <source>Background:</source>
         <translation>Фон:</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="620"/>
+        <location filename="../../src/settingseditor.ui" line="633"/>
         <source>Show image</source>
         <translation>Показывать изображение</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="627"/>
+        <location filename="../../src/settingseditor.ui" line="640"/>
         <source>Show recognized</source>
         <translation>Показывать распознанное</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="677"/>
+        <location filename="../../src/settingseditor.ui" line="690"/>
         <source>Update check interval (days):</source>
         <translation>Интервал проверки обновления (дней):</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="684"/>
+        <location filename="../../src/settingseditor.ui" line="697"/>
         <source>0 - disabled</source>
         <translation>- отключено</translation>
     </message>
@@ -1063,22 +1092,22 @@ in %1</source>
         <translation>Переходить к следующему переводчику после:</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="521"/>
+        <location filename="../../src/settingseditor.ui" line="534"/>
         <source>Result type</source>
         <translation>Тип результата</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="533"/>
+        <location filename="../../src/settingseditor.ui" line="546"/>
         <source>Tray</source>
         <translation>Трей</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="546"/>
+        <location filename="../../src/settingseditor.ui" line="559"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.ui" line="700"/>
+        <location filename="../../src/settingseditor.ui" line="713"/>
         <source>Check now</source>
         <translation>Проверить сейчас</translation>
     </message>
@@ -1219,7 +1248,7 @@ Then set default recognition and translation languages, enable some (or all) tra
 Далее установите языки распознавания и перевода по умолчанию, активируйте некоторые (или все) переводчики и настройку &quot;переводить текст&quot;, если нужно.</translation>
     </message>
     <message>
-        <location filename="../../src/settingseditor.cpp" line="371"/>
+        <location filename="../../src/settingseditor.cpp" line="373"/>
         <source>Portable changed. Apply settings first</source>
         <translation>Portable режим изменен. Сначала примените настройки</translation>
     </message>
@@ -1245,40 +1274,54 @@ Then set default recognition and translation languages, enable some (or all) tra
 <context>
     <name>Translator</name>
     <message>
-        <location filename="../../src/translate/translator.cpp" line="43"/>
         <source>Load images</source>
-        <translation>Загружать изображения</translation>
+        <translation type="vanished">Загружать изображения</translation>
     </message>
     <message>
-        <location filename="../../src/translate/translator.cpp" line="44"/>
         <source>Debug</source>
-        <translation>Отладка</translation>
+        <translation type="vanished">Отладка</translation>
     </message>
     <message>
-        <location filename="../../src/translate/translator.cpp" line="58"/>
         <source>Translator</source>
-        <translation>Переводчик</translation>
+        <translation type="vanished">Переводчик</translation>
     </message>
     <message>
-        <location filename="../../src/translate/translator.cpp" line="65"/>
         <source>Url:</source>
-        <translation>Адрес:</translation>
+        <translation type="vanished">Адрес:</translation>
     </message>
     <message>
-        <location filename="../../src/translate/translator.cpp" line="138"/>
         <source>No translators loaded from
 %1
 (%2)</source>
-        <translation>Не удалось загрузить переводчики из
+        <translation type="vanished">Не удалось загрузить переводчики из
 %1
 (%2)</translation>
     </message>
     <message>
-        <location filename="../../src/translate/translator.cpp" line="270"/>
         <source>All translators failed
 %1</source>
-        <translation>Не удалось перевести текст
+        <translation type="vanished">Не удалось перевести текст
 %1</translation>
+    </message>
+    <message>
+        <location filename="../../src/translate/translator.cpp" line="63"/>
+        <source>Error: Google Cloud API Key is empty. Please configure it in Settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/translate/translator.cpp" line="95"/>
+        <source>Network Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/translate/translator.cpp" line="104"/>
+        <source>API Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/translate/translator.cpp" line="110"/>
+        <source>Error: Empty translation result.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1329,17 +1372,16 @@ Most likely they are already in use by another program</source>
         <translation>В буфер обмена</translation>
     </message>
     <message>
-        <location filename="../../src/trayicon.cpp" line="234"/>
         <source>Show translator</source>
-        <translation>Показать переводчик</translation>
+        <translation type="vanished">Показать переводчик</translation>
     </message>
     <message>
-        <location filename="../../src/trayicon.cpp" line="240"/>
+        <location filename="../../src/trayicon.cpp" line="235"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/trayicon.cpp" line="246"/>
+        <location filename="../../src/trayicon.cpp" line="241"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
@@ -1453,9 +1495,8 @@ Error %2</source>
 <context>
     <name>WebPage</name>
     <message>
-        <location filename="../../src/translate/webpage.cpp" line="137"/>
         <source>timed out</source>
-        <translation>таймаут</translation>
+        <translation type="vanished">таймаут</translation>
     </message>
 </context>
 <context>
@@ -1536,7 +1577,7 @@ Error %2</source>
 %1</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="921"/>
+        <location filename="../../src/service/updates.cpp" line="916"/>
         <source>Update all</source>
         <translation>Обновить все</translation>
     </message>

@@ -385,11 +385,6 @@ void Manager::showLast()
   representer_->showLast();
 }
 
-void Manager::showTranslator()
-{
-  SOFT_ASSERT(translator_, return );
-  translator_->show();
-}
 
 void Manager::copyLastToClipboard()
 {

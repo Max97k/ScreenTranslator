@@ -14,7 +14,7 @@
 #include <QTimer>
 
 Translator::Translator(Manager &manager, const Settings &settings)
-  : QObject(&manager)
+  : QObject(nullptr)
   , manager_(manager)
   , settings_(settings)
   , networkManager_(new QNetworkAccessManager(this))
@@ -48,7 +48,13 @@ QStringList Translator::availableTranslators(const QString &)
 
 QStringList Translator::availableLanguageNames()
 {
-  return LanguageCodes::names();
+  QStringList names;
+  for (const auto &id : LanguageCodes::allIds()) {
+    if (!LanguageCodes::iso639_1(id).isEmpty()) {
+      names.append(LanguageCodes::name(id));
+    }
+  }
+  return names;
 }
 
 void Translator::translateWithGoogleCloud(const TaskPtr &task)

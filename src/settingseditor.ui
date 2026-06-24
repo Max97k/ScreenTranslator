@@ -462,6 +462,19 @@
            </property>
           </widget>
          </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_googleCloudApiKey">
+           <property name="text">
+            <string>Google Cloud API Key:</string>
+           </property>
+           <property name="buddy">
+            <cstring>googleCloudApiKey</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1" colspan="2">
+          <widget class="QLineEdit" name="googleCloudApiKey" />
+         </item>
          <item row="3" column="1" colspan="2">
           <widget class="QLabel" name="translatorsPath">
            <property name="text">

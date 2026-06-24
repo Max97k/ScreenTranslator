@@ -24,9 +24,9 @@
 #include <windows.graphics.capture.interop.h>
 
 using namespace winrt;
-using namespace Windows::Graphics::Capture;
-using namespace Windows::Graphics::DirectX;
-using namespace Windows::Graphics::DirectX::Direct3D11;
+using namespace winrt::Windows::Graphics::Capture;
+using namespace winrt::Windows::Graphics::DirectX;
+using namespace winrt::Windows::Graphics::DirectX::Direct3D11;
 
 inline auto CreateDirect3DDevice(IDXGIDevice* dxgi_device)
 {
@@ -98,7 +98,7 @@ BOOL CALLBACK MonitorEnumProc(HMONITOR hMonitor, HDC, LPRECT lprcMonitor, LPARAM
         
         if (frame) {
             auto surface = frame.Surface();
-            auto access = surface.as<Windows::Graphics::DirectX::Direct3D11::IDirect3DDxgiInterfaceAccess>();
+            auto access = surface.as<::Windows::Graphics::DirectX::Direct3D11::IDirect3DDxgiInterfaceAccess>();
             com_ptr<ID3D11Texture2D> texture;
             check_hresult(access->GetInterface(guid_of<ID3D11Texture2D>(), texture.put_void()));
             

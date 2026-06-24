@@ -19,11 +19,11 @@
 #include <MemoryBuffer.h>
 
 using namespace winrt;
-using namespace Windows::Foundation;
-using namespace Windows::Globalization;
-using namespace Windows::Graphics::Imaging;
-using namespace Windows::Media::Ocr;
-using namespace Windows::Storage::Streams;
+using namespace winrt::Windows::Foundation;
+using namespace winrt::Windows::Globalization;
+using namespace winrt::Windows::Graphics::Imaging;
+using namespace winrt::Windows::Media::Ocr;
+using namespace winrt::Windows::Storage::Streams;
 #endif
 
 WinOcr::WinOcr(const LanguageId &language, const QString &path)
@@ -43,7 +43,7 @@ void WinOcr::init(const LanguageId &language)
     // Windows 11 OCR uses BCP-47 language tags.
     // E.g., "en-US", "ja", "ru". We map LanguageId to ISO 639-1 or whatever is available.
     QString langCode = LanguageCodes::iso639_1(language);
-    Language lang(to_hstring(langCode.toStdWString()));
+    Language lang(langCode.toStdWString());
 
     if (!OcrEngine::IsLanguageSupported(lang)) {
         error_ = QObject::tr("Language not supported by Windows OCR");
@@ -136,13 +136,13 @@ QString WinOcr::recognize(const QPixmap &source)
     IMemoryBufferReference reference = buffer.CreateReference();
 
     // Using interop to get byte array
-    auto interop = reference.as<::IMemoryBufferByteAccess>();
+    auto interop = reference.as<::Windows::Foundation::IMemoryBufferByteAccess>();
     uint8_t* dataInBytes;
     uint32_t capacity;
     winrt::check_hresult(interop->GetBuffer(&dataInBytes, &capacity));
 
     // QImage RGBA8888 has 4 bytes per pixel.
-    memcpy(dataInBytes, image.bits(), std::min(static_cast<size_t>(capacity), static_cast<size_t>(image.sizeInBytes())));
+    memcpy(dataInBytes, image.bits(), (std::min)(static_cast<size_t>(capacity), static_cast<size_t>(image.sizeInBytes())));
 
     reference.Close();
     buffer.Close();

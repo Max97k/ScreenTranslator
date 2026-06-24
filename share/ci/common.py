@@ -130,9 +130,27 @@ def symlink(src, dest):
     norm_src = os.path.normcase(src)
     norm_dest = os.path.normcase(dest)
     if os.path.lexists(norm_dest):
-        os.remove(norm_dest)
-    os.symlink(norm_src, norm_dest,
-               target_is_directory=os.path.isdir(norm_src))
+        if os.path.isdir(norm_dest) and not os.path.islink(norm_dest):
+            try:
+                os.rmdir(norm_dest)
+            except OSError:
+                shutil.rmtree(norm_dest, ignore_errors=True)
+        else:
+            try:
+                os.remove(norm_dest)
+            except OSError:
+                shutil.rmtree(norm_dest, ignore_errors=True)
+    try:
+        os.symlink(norm_src, norm_dest,
+                   target_is_directory=os.path.isdir(norm_src))
+    except OSError as e:
+        if platform.system() == "Windows":
+            if os.path.isdir(norm_src):
+                sub.run('cmd /c mklink /j "{}" "{}"'.format(norm_dest, norm_src), check=True, shell=True)
+            else:
+                sub.run('cmd /c mklink /h "{}" "{}"'.format(norm_dest, norm_src), check=True, shell=True)
+        else:
+            raise e
 
 
 def recreate_dir(path):

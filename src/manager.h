@@ -23,7 +23,6 @@ public:
   void repeatCapture();
   void captureLocked();
   void showLast();
-  void showTranslator();
   void settings();
   void copyLastToClipboard();
   void quit();
