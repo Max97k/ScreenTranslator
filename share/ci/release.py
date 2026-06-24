@@ -28,8 +28,6 @@ def r(script):
 
 r('get_qt.py')
 r('get_qt_ssl.py')
-r('get_leptonica.py')
-r('get_tesseract.py')
 
 r('get_hunspell.py')
 r('test.py')

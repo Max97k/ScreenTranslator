@@ -65,6 +65,7 @@ public:
   std::chrono::seconds translationTimeout{15};
   QString translatorsPath;
   QStringList translators{"google.js"};
+  QString googleCloudApiKey;
 
   ResultMode resultShowType{ResultMode::Widget};  // dialog
   QString fontFamily;

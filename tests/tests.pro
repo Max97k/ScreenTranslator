@@ -6,7 +6,9 @@ QT += widgets network testlib
 INCLUDEPATH += $$PWD/../external $$PWD/../src/service
 
 HEADERS += \
-  ../src/service/updates.h
+  ../src/service/updates.h \
+  ../src/task.h \
+  mocknetworkaccessmanager.h
 
 SOURCES += \
   ../external/gtest/gtest-all.cc \
@@ -16,4 +18,6 @@ SOURCES += \
   ../external/miniz/miniz.c \
   geometryutils_test.cpp \
   main.cpp \
-  updates_test.cpp
+  updates_test.cpp \
+  mocknetworkaccessmanager.cpp \
+  translation_pipeline_test.cpp

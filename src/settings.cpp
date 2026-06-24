@@ -47,6 +47,7 @@ const QString qs_ignoreSslErrors = "ignoreSslErrors";
 const QString qs_translationLanguage = "translation_language";
 const QString qs_translationTimeout = "translation_timeout";
 const QString qs_translators = "translators";
+const QString qs_googleCloudApiKey = "googleCloudApiKey";
 
 const QString qs_representationGroup = "Representation";
 const QString qs_fontFamily = "fontFamily";
@@ -191,6 +192,7 @@ void Settings::save() const
   settings.setValue(qs_translationLanguage, targetLanguage);
   settings.setValue(qs_translationTimeout, int(translationTimeout.count()));
   settings.setValue(qs_translators, translators);
+  settings.setValue(qs_googleCloudApiKey, googleCloudApiKey);
 
   settings.endGroup();
 
@@ -288,6 +290,7 @@ void Settings::load()
   translators = settings.value(qs_translators, translators).toStringList();
   if (translators.size() == 1 && translators.first().contains('|'))  // legacy
     translators = translators.first().split('|');
+  googleCloudApiKey = settings.value(qs_googleCloudApiKey, googleCloudApiKey).toString();
 
   settings.endGroup();
 

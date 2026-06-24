@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <ui version="4.0">
  <class>SettingsEditor</class>
  <widget class="QDialog" name="SettingsEditor">
@@ -44,7 +44,7 @@
         <item>
          <widget class="QLabel" name="pageInfoLabel">
           <property name="text">
-           <string/>
+           <string />
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -91,7 +91,7 @@
            </palette>
           </property>
           <property name="text">
-           <string/>
+           <string />
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -128,7 +128,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QComboBox" name="proxyTypeCombo"/>
+             <widget class="QComboBox" name="proxyTypeCombo" />
             </item>
             <item row="0" column="2">
              <widget class="QLabel" name="label_15">
@@ -138,7 +138,7 @@
              </widget>
             </item>
             <item row="0" column="3">
-             <widget class="QLineEdit" name="proxyUserEdit"/>
+             <widget class="QLineEdit" name="proxyUserEdit" />
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_13">
@@ -148,7 +148,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLineEdit" name="proxyHostEdit"/>
+             <widget class="QLineEdit" name="proxyHostEdit" />
             </item>
             <item row="1" column="2">
              <widget class="QLabel" name="label_16">
@@ -158,7 +158,7 @@
              </widget>
             </item>
             <item row="1" column="3">
-             <widget class="QLineEdit" name="proxyPassEdit"/>
+             <widget class="QLineEdit" name="proxyPassEdit" />
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_14">
@@ -221,7 +221,7 @@
            </property>
            <layout class="QGridLayout" name="gridLayout">
             <item row="4" column="1">
-             <widget class="service::KeySequenceEdit" name="clipboardEdit" native="true"/>
+             <widget class="service::KeySequenceEdit" name="clipboardEdit" native="true" />
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_8">
@@ -231,7 +231,7 @@
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="service::KeySequenceEdit" name="repeatCaptureEdit" native="true"/>
+             <widget class="service::KeySequenceEdit" name="repeatCaptureEdit" native="true" />
             </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_3">
@@ -241,7 +241,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="service::KeySequenceEdit" name="captureEdit" native="true"/>
+             <widget class="service::KeySequenceEdit" name="captureEdit" native="true" />
             </item>
             <item row="4" column="0">
              <widget class="QLabel" name="label_7">
@@ -251,7 +251,7 @@
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="service::KeySequenceEdit" name="repeatEdit" native="true"/>
+             <widget class="service::KeySequenceEdit" name="repeatEdit" native="true" />
             </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label">
@@ -268,7 +268,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="service::KeySequenceEdit" name="captureLockedEdit" native="true"/>
+             <widget class="service::KeySequenceEdit" name="captureLockedEdit" native="true" />
             </item>
            </layout>
           </widget>
@@ -305,7 +305,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QComboBox" name="tesseractLangCombo"/>
+          <widget class="QComboBox" name="tesseractLangCombo" />
          </item>
          <item row="2" column="2">
           <spacer name="verticalSpacer_2">
@@ -323,7 +323,7 @@
          <item row="0" column="2">
           <widget class="QLabel" name="tessdataPath">
            <property name="text">
-            <string/>
+            <string />
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -400,7 +400,7 @@
          <item row="1" column="1">
           <widget class="QLabel" name="hunspellDir">
            <property name="text">
-            <string/>
+            <string />
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -436,7 +436,7 @@
           </widget>
          </item>
          <item row="4" column="1" colspan="2">
-          <widget class="QComboBox" name="translateLangCombo"/>
+          <widget class="QComboBox" name="translateLangCombo" />
          </item>
          <item row="0" column="0" colspan="2">
           <widget class="QCheckBox" name="doTranslationCheck">
@@ -465,7 +465,7 @@
          <item row="3" column="1" colspan="2">
           <widget class="QLabel" name="translatorsPath">
            <property name="text">
-            <string/>
+            <string />
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -498,7 +498,7 @@
          <item row="8" column="0" colspan="3">
           <widget class="QLabel" name="translatorHint">
            <property name="text">
-            <string/>
+            <string />
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -567,7 +567,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QFontComboBox" name="resultFont"/>
+             <widget class="QFontComboBox" name="resultFont" />
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_19">
@@ -596,7 +596,7 @@
             <item row="2" column="1">
              <widget class="QPushButton" name="fontColor">
               <property name="text">
-               <string/>
+               <string />
               </property>
              </widget>
             </item>
@@ -610,7 +610,7 @@
             <item row="3" column="1">
              <widget class="QPushButton" name="backgroundColor">
               <property name="text">
-               <string/>
+               <string />
               </property>
              </widget>
             </item>
@@ -711,7 +711,7 @@
          <item>
           <widget class="QLabel" name="aboutLabel">
            <property name="text">
-            <string/>
+            <string />
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -721,7 +721,7 @@
          <item>
           <widget class="QLabel" name="helpLabel">
            <property name="text">
-            <string/>
+            <string />
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -783,6 +783,6 @@
   <tabstop>proxyPassEdit</tabstop>
   <tabstop>proxySaveCheck</tabstop>
  </tabstops>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

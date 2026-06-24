@@ -1,7 +1,7 @@
 #include "recognizerworker.h"
 #include "debug.h"
 #include "task.h"
-#include "tesseract.h"
+#include "winocr.h"
 
 RecognizeWorker::~RecognizeWorker() = default;
 
@@ -18,7 +18,7 @@ void RecognizeWorker::handle(const TaskPtr &task)
     LTRACE() << "Create OCR engine" << task->sourceLanguage;
 
     auto engine =
-        std::make_unique<Tesseract>(task->sourceLanguage, tessdataPath_);
+        std::make_unique<WinOcr>(task->sourceLanguage, tessdataPath_);
 
     if (!engine->isValid()) {
       result->error = tr("Failed to init OCR engine: %1").arg(engine->error());

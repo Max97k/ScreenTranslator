@@ -4,7 +4,7 @@
 #include "recognizerworker.h"
 #include "settings.h"
 #include "task.h"
-#include "tesseract.h"
+#include "winocr.h"
 
 #include <QThread>
 
@@ -69,7 +69,7 @@ Recognizer::~Recognizer()
   workerThread_->quit();
   const auto timeoutMs = 2000;
   if (!workerThread_->wait(timeoutMs)) {
-    LTRACE() << "terminating tesseract thread";
+    LTRACE() << "terminating recognizer thread";
     workerThread_->terminate();
   }
 }

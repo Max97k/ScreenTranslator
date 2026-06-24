@@ -272,6 +272,7 @@ Settings SettingsEditor::settings() const
   settings.targetLanguage =
       LanguageCodes::idForName(ui->translateLangCombo->currentText());
   settings.translators = enabledTranslators();
+  settings.googleCloudApiKey = ui->googleCloudApiKey->text();
 
   settings.resultShowType =
       ui->trayRadio->isChecked() ? ResultMode::Tooltip : ResultMode::Widget;
@@ -331,6 +332,7 @@ void SettingsEditor::setSettings(const Settings &settings)
   ui->translateLangCombo->setCurrentText(
       LanguageCodes::name(settings.targetLanguage));
   updateTranslators(settings.translators);
+  ui->googleCloudApiKey->setText(settings.googleCloudApiKey);
 
   ui->trayRadio->setChecked(settings.resultShowType == ResultMode::Tooltip);
   ui->dialogRadio->setChecked(settings.resultShowType == ResultMode::Widget);
