@@ -45,10 +45,7 @@ jobs:
           key: ${{ env.OS }}-${{ hashFiles('./share/ci/*.py') }}
 
       - name: Make a release
-        shell: bash
-        run: |
-          python ./share/ci/release.py
-          echo "artifact=`python ./share/ci/release.py artifact_name`" >> $GITHUB_ENV
+        run: python ./share/ci/release.py
 
       - name: Upload build artifact
         if: env.artifact != ''
