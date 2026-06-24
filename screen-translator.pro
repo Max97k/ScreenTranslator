@@ -8,10 +8,10 @@ DEPS_DIR=$$(ST_DEPS_DIR)
 isEmpty(DEPS_DIR):DEPS_DIR=$$PWD/../deps
 INCLUDEPATH += $$DEPS_DIR/include
 LIBS += -L$$DEPS_DIR/lib
-LIBS += -lhunspell -lleptonica -ltesseract
+LIBS += -lhunspell
 
 win32{
-  LIBS += -lUser32
+  LIBS += -lUser32 -lwindowsapp
 }
 linux{
   QT += x11extras
@@ -45,7 +45,7 @@ HEADERS += \
   src/manager.h \
   src/ocr/recognizer.h \
   src/ocr/recognizerworker.h \
-  src/ocr/tesseract.h \
+  src/ocr/winocr.h \
   src/represent/representer.h \
   src/represent/resulteditor.h \
   src/represent/resultwidget.h \
@@ -83,7 +83,7 @@ SOURCES += \
   src/manager.cpp \
   src/ocr/recognizer.cpp \
   src/ocr/recognizerworker.cpp \
-  src/ocr/tesseract.cpp \
+  src/ocr/winocr.cpp \
   src/represent/representer.cpp \
   src/represent/resulteditor.cpp \
   src/represent/resultwidget.cpp \

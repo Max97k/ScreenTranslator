@@ -1,6 +1,6 @@
 #include "commonmodels.h"
 #include "settings.h"
-#include "tesseract.h"
+#include "winocr.h"
 #include "translator.h"
 
 CommonModels::CommonModels()
@@ -15,7 +15,7 @@ void CommonModels::update(const QString &tessdataPath,
                           const QString &translatorPath)
 {
   {
-    auto names = Tesseract::availableLanguageNames(tessdataPath);
+    auto names = WinOcr::availableLanguageNames(tessdataPath);
     std::sort(names.begin(), names.end());
     sourceLanguageModel_->setStringList(names);
   }

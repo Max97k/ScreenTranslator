@@ -4,7 +4,7 @@
 
 #include <QObject>
 
-class Tesseract;
+class WinOcr;
 
 class RecognizeWorker : public QObject
 {
@@ -21,7 +21,7 @@ signals:
 private:
   void removeUnused(Generation current);
 
-  std::map<QString, std::unique_ptr<Tesseract>> engines_;
+  std::map<QString, std::unique_ptr<WinOcr>> engines_;
   std::map<QString, Generation> lastGenerations_;
   QString tessdataPath_;
 };
