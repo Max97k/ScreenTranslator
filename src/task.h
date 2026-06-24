@@ -4,10 +4,12 @@
 
 #include <QDebug>
 #include <QPixmap>
+#include <future>
 
 class Task
 {
 public:
+  Task() = default;
   bool isNull() const { return captured.isNull() && !sourceLanguage.isEmpty(); }
   bool isValid() const { return error.isEmpty(); }
 
@@ -29,6 +31,16 @@ public:
 
   QString error;
   QStringList translatorErrors;
+
+  std::shared_ptr<std::promise<void>> capturePromise{std::make_shared<std::promise<void>>()};
+  std::shared_ptr<std::promise<void>> ocrPromise{std::make_shared<std::promise<void>>()};
+  std::shared_ptr<std::promise<void>> correctPromise{std::make_shared<std::promise<void>>()};
+  std::shared_ptr<std::promise<void>> translatePromise{std::make_shared<std::promise<void>>()};
+
+  std::shared_ptr<std::future<void>> captureFuture{std::make_shared<std::future<void>>(capturePromise->get_future())};
+  std::shared_ptr<std::future<void>> ocrFuture{std::make_shared<std::future<void>>(ocrPromise->get_future())};
+  std::shared_ptr<std::future<void>> correctFuture{std::make_shared<std::future<void>>(correctPromise->get_future())};
+  std::shared_ptr<std::future<void>> translateFuture{std::make_shared<std::future<void>>(translatePromise->get_future())};
 };
 
 using TaskPtr = std::shared_ptr<Task>;

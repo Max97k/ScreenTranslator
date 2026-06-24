@@ -11,6 +11,7 @@ public:
   ~Manager();
 
   void captured(const TaskPtr &task);
+  void runPipelineAsync(const TaskPtr &task);
   void captureCanceled();
   void recognized(const TaskPtr &task);
   void corrected(const TaskPtr &task);

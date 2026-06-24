@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QNetworkProxy>
 #include <QThread>
+#include <QtConcurrent/QtConcurrent>
 
 namespace
 {
@@ -218,6 +219,38 @@ void Manager::finishTask(const TaskPtr &task)
   tray_->showSuccess();
 }
 
+void Manager::runPipelineAsync(const TaskPtr &task)
+{
+  QtConcurrent::run([this, task]() {
+    task->captureFuture->wait();
+    if (!task->isValid()) {
+      QMetaObject::invokeMethod(tray_.get(), [this, task]() { finishTask(task); }, Qt::QueuedConnection);
+      return;
+    }
+    QMetaObject::invokeMethod(tray_.get(), [this, task]() { recognizer_->recognize(task); }, Qt::QueuedConnection);
+
+    task->ocrFuture->wait();
+    if (!task->isValid()) {
+      QMetaObject::invokeMethod(tray_.get(), [this, task]() { finishTask(task); }, Qt::QueuedConnection);
+      return;
+    }
+    QMetaObject::invokeMethod(tray_.get(), [this, task]() { corrector_->correct(task); }, Qt::QueuedConnection);
+
+    task->correctFuture->wait();
+    if (!task->isValid()) {
+      QMetaObject::invokeMethod(tray_.get(), [this, task]() { finishTask(task); }, Qt::QueuedConnection);
+      return;
+    }
+
+    if (!task->targetLanguage.isEmpty()) {
+      QMetaObject::invokeMethod(tray_.get(), [this, task]() { translator_->translate(task); }, Qt::QueuedConnection);
+      task->translateFuture->wait();
+    } else {
+      QMetaObject::invokeMethod(tray_.get(), [this, task]() { translated(task); }, Qt::QueuedConnection);
+    }
+  });
+}
+
 void Manager::captured(const TaskPtr &task)
 {
   tray_->setCaptureLockedEnabled(capturer_->canCaptureLocked());
@@ -229,12 +262,8 @@ void Manager::captured(const TaskPtr &task)
   ++activeTaskCount_;
   tray_->setActiveTaskCount(activeTaskCount_);
 
-  if (!task->isValid()) {
-    finishTask(task);
-    return;
-  }
-
-  recognizer_->recognize(task);
+  task->capturePromise->set_value();
+  runPipelineAsync(task);
 }
 
 void Manager::captureCanceled()
@@ -248,12 +277,7 @@ void Manager::recognized(const TaskPtr &task)
   SOFT_ASSERT(task, return );
   LTRACE() << "recognized" << task;
 
-  if (!task->isValid()) {
-    finishTask(task);
-    return;
-  }
-
-  corrector_->correct(task);
+  task->ocrPromise->set_value();
 }
 
 void Manager::corrected(const TaskPtr &task)
@@ -261,21 +285,20 @@ void Manager::corrected(const TaskPtr &task)
   SOFT_ASSERT(task, return );
   LTRACE() << "corrected" << task;
 
-  if (!task->isValid()) {
-    finishTask(task);
-    return;
-  }
-
-  if (!task->targetLanguage.isEmpty())
-    translator_->translate(task);
-  else
-    translated(task);
+  task->correctPromise->set_value();
 }
 
 void Manager::translated(const TaskPtr &task)
 {
   SOFT_ASSERT(task, return );
   LTRACE() << "translated" << task;
+
+  try {
+    task->translatePromise->set_value();
+  } catch(const std::future_error& e) {
+    // If it was already set, ignore. This happens when there is no target language
+    // and translated() is called directly, but translatePromise isn't awaited.
+  }
 
   finishTask(task);
 
