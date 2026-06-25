@@ -3649,6 +3649,25 @@ static bool ValidateTestPropertyName(
                   << " are reserved by " << GTEST_NAME_ << ")";
     return false;
   }
+  if (property_name.empty()) {
+    ADD_FAILURE() << "Test property name cannot be empty.";
+    return false;
+  }
+  char c = property_name[0];
+  if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')) {
+    ADD_FAILURE() << "Test property name " << property_name
+                  << " is not a valid XML attribute name. It should start with a letter or underscore.";
+    return false;
+  }
+  for (size_t i = 1; i < property_name.length(); ++i) {
+    c = property_name[i];
+    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+          (c >= '0' && c <= '9') || c == '_' || c == '-' || c == '.')) {
+      ADD_FAILURE() << "Test property name " << property_name
+                    << " is not a valid XML attribute name. It should only contain letters, digits, underscores, hyphens, or periods.";
+      return false;
+    }
+  }
   return true;
 }
 
