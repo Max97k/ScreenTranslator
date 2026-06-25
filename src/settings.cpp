@@ -101,13 +101,25 @@ Substitutions loadLegacySubstitutions()
     return result;
 
   const auto data = f.readAll();
+  const QString text = QString::fromUtf8(data);
 
-  const auto lines = QString::fromUtf8(data).split('\n', Qt::SkipEmptyParts);
-  for (const auto& line : lines) {
-    const auto parts = line.mid(1, line.size() - 2).split("\",\"");  // remove "
-    if (parts.size() < 3)
-      continue;
-    result.emplace(parts[0], Substitution{parts[1], parts[2]});
+  for (const auto& line : QStringView(text).split('\n', Qt::SkipEmptyParts)) {
+    if (line.size() < 2) continue;
+
+    const auto inner = line.mid(1, line.size() - 2);
+    const QStringView sep(u"\",\"");
+
+    const int idx1 = inner.indexOf(sep);
+    if (idx1 == -1) continue;
+
+    const int idx2 = inner.indexOf(sep, idx1 + 3);
+    if (idx2 == -1) continue;
+
+    const auto p0 = inner.left(idx1).toString();
+    const auto p1 = inner.mid(idx1 + 3, idx2 - idx1 - 3).toString();
+    const auto p2 = inner.mid(idx2 + 3).toString();
+
+    result.emplace(p0, Substitution{p1, p2});
   }
   return result;
 }
