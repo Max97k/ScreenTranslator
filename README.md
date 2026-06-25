@@ -1,100 +1,68 @@
-# Screen Translator
+# Screen Translator (v4.0.0)
 
-**The project is almost abandoned. I don't have time for it and I can only fix minor issues**
+**A modernized, lightweight, and fast fork of ScreenTranslator designed for Windows 10 & 11.**
 
 ## Introduction
 
-This software allows you to translate any text on screen.
-Basically it is a combination of screen capture, OCR and translation tools.
-Translation is currently done via online services.
+This software allows you to translate any text on screen. It is a powerful combination of screen capture, OCR (Optical Character Recognition), and translation tools.
+
+Unlike the original version, **v4.0.0** has been modernized to eliminate heavy and obsolete third-party dependencies:
+*   **Windows Native OCR (WinRT)**: Replaced Tesseract OCR. There is no need to download or manage massive `.traineddata` files. It runs instantly using the Windows built-in character recognition engine.
+*   **Native Google Cloud Translation API**: Replaced the heavy `QWebEngine` browser backend and Javascript scraper scripts. Network requests are handled natively via C++ for maximum speed, security, and stability.
+
+---
 
 ## Installation
 
-**Windows**: download archive from [github releases](https://github.com/OneMoreGres/ScreenTranslator/releases) page, extract it and run `.exe` file.
+### Windows (v4.0.0+)
+1. Download the latest release package (`ScreenTranslator-4.0.0-win64.zip`) from the releases page.
+2. Extract the archive to any folder.
+3. Run `screen-translator.exe`.
 
-If the app fails to start complaining about missing dlls or there are any update errors related to SSL/TLS then install or repair `vs_redist*.exe` from the release archive.
+*Note: If the application complains about missing VC++ runtimes, install or repair `vc_redist.x64.exe` included in the folder.*
 
-**Linux**: download `.AppImage` file from [github releases](https://github.com/OneMoreGres/ScreenTranslator/releases), make executable (`chmod +x <file>`) and run it.
+---
 
-**OS X**: currently not supported.
+## Setup & Configuration
 
-## Setup
+The app runs entirely in the background and only shows a system tray icon.
 
-The app doesn't have a main window.
-After start it shows only the tray icon.
+### 1. Configure the Translation API
+Since version 4.0.0 utilizes the official Google Cloud Translation API, you need to provide a Google Cloud API Key:
+1. Right-click the ScreenTranslator icon in the system tray and select **Settings**.
+2. Go to the **Translation** tab on the left.
+3. Paste your key into the **Google Cloud API Key** input box.
+4. Ensure the **Do translation** checkbox at the top is checked.
+5. Click **OK** to save.
 
-If the app detects invalid settings, it will show the error message via system tray.
-It will also highlight the section name in red on the left panel of the settings window.
-Clicking on that section name will show a more detailed error message in the right panel (also in red).
+### 2. Adding OCR Languages
+Because the software uses Windows Native OCR, you do not download language packs inside the app. Instead, you manage them directly through Windows Settings:
+1. Open Windows **Settings** -> **Time & language** -> **Language & region**.
+2. Click **Add a language** and search for the language you wish to recognize (e.g. Japanese, French).
+3. Make sure to check **Basic typing / Optical Character Recognition (OCR)** during installation.
+4. Once Windows completes the download, restart ScreenTranslator. The language will automatically appear under **Settings** -> **Recognition** tab.
 
-The packages downloaded from this site do not include resources, such as recognition language packs or scripts to interact with online translation services.
-
-To download them, open the settings window and go to the `Update` section.
-In the right panel, expand the `recognizers` and `translators` sections.
-Select preferred items, then right click and choose `Install/Update`.
-After the progress bar reaches `100%`, the resource's state will change to `Up to Date`.
-
-You must download at least one `recognizers` resource and one `translators` resource.
-
-After finishing downloads, go to the `Recognition` section and update the default recognition language setting (the source to be translated).
-Then go to the `Translation` section, update the default translation language setting (the language to be translated into) and enable some or all translation sevices (you may also change their order by dragging).
-
-After that all sections in the left panel should be black.
-Then click `Ok` to close settings.
-
-### Third party enhancements
-
-**Not tested or reviewed by me**
-
-* to translate with online AI services use scripts from [here](https://github.com/Suki8898/Translator)
-
-* to install Hebrew translation of the app itself (thanks to [Y-PLONI](https://github.com/Y-PLONI)),
-download [this](https://github.com/OneMoreGres/ScreenTranslator/releases/download/3.3.0/screentranslator_he.qm)
-file and place it into the `translations` folder next to `screen-translator.exe`.
+---
 
 ## Usage
 
-1. Run program (note that it doesn't have main window).
-2. Press capture hotkey.
-3. Select region on screen. Customize it if needed.
-4. Get translation of recognized text.
-5. Check for updates if something is not working.
+1. Start the program (it runs quietly in the system tray).
+2. Press the capture hotkey (default is `Ctrl + Alt + Z`).
+3. Select the region on screen to recognize.
+4. The translated text will appear on screen.
 
-## FAQ
-
-By default resources are downloaded to the one of the user's folders.
-If `Portable` setting in `General` section is checked, then resources will be downloaded to the app's folder.
-
-Set `QTWEBENGINE_DISABLE_SANDBOX=1` environment variable when fail to start due to crash.
-
-Answers to some frequently asked questions can be found in issues or
-[wiki](https://github.com/OneMoreGres/ScreenTranslator/wiki/FAQ)
-
-## Limitations
-
-* Can not capture some dynamic web-pages/full screen applications
+---
 
 ## Dependencies
 
-* see [Qt 5](https://qt-project.org/)
-* see [Tesseract](https://github.com/tesseract-ocr/tesseract/)
-* see [Leptonica](https://leptonica.com/)
-* several online translation services
+*   [Qt 5 (Widgets, Network, Testlib)](https://qt-project.org/)
+*   Windows 10/11 Native OCR (WinRT APIs)
+*   [Hunspell](https://github.com/hunspell/hunspell) (For spelling correction)
 
-## Build from source
+---
 
-Look at the scripts (python3) in the `share/ci` folder.
-Normally, you should only edit the `config.py` file.
+## Build from Source
 
-Build dependencies at first, then build the app.
-
-## Attributions
-
-* icons made by
-[Smashicons](https://www.flaticon.com/authors/smashicons),
-[Freepik](https://www.flaticon.com/authors/freepik),
-from [Flaticon](https://www.flaticon.com/)
-
-## Alternative solutions
-
-* [Translumo](https://github.com/ramjke/Translumo) - Advanced real-time screen translator for games, hardcoded subtitles in videos, static text and etc.
+Look at the scripts (python3) in the `share/ci` folder:
+1. Set the environment variable `$env:OS="win64"` (or `win32`).
+2. Run `python share/ci/release.py` to build and package.
