@@ -22,7 +22,7 @@
 namespace
 {
 #ifdef DEVELOP
-const auto updatesUrl = "http://localhost:8081/updates.json";
+const auto updatesUrl = "https://localhost:8081/updates.json";
 #else
 const auto updatesUrl =
     "https://raw.githubusercontent.com/OneMoreGres/ScreenTranslator/master/"
