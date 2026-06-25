@@ -74,8 +74,8 @@ void Translator::translateWithGoogleCloud(const TaskPtr &task)
 
   QJsonObject json;
   json["q"] = task->recognized;
-  json["source"] = settings_.sourceLanguage;
-  json["target"] = settings_.targetLanguage;
+  json["source"] = LanguageCodes::iso639_1(settings_.sourceLanguage);
+  json["target"] = LanguageCodes::iso639_1(settings_.targetLanguage);
   json["format"] = "text";
 
   QByteArray data = QJsonDocument(json).toJson();
