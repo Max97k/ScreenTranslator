@@ -8,6 +8,9 @@
 
 #include <chrono>
 #include <map>
+#include <memory>
+#include <mutex>
+#include <QSettings>
 
 enum class ResultMode { Widget, Tooltip };
 
@@ -76,5 +79,9 @@ public:
   bool showCaptured{true};
 
 private:
+  QSettings& qsettings() const;
+
   bool isPortable_{false};
+  mutable std::mutex mutex_;
+  mutable std::unique_ptr<QSettings> qsettings_;
 };
