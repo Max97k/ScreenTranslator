@@ -60,13 +60,31 @@ jobs:
     if: contains(github.ref, '/tags/')
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: dist
           merge-multiple: true
 
+      - name: Generate release notes
+        run: |
+          python -c "
+          with open('share/Changelog_en.md', 'r', encoding='utf-8') as f:
+              content = f.read()
+          start = content.find('## 4.0.0')
+          end = content.find('## 3.3.0')
+          if start != -1 and end != -1:
+              notes = content[start:end].strip()
+          else:
+              notes = 'Screen Translator v4.0.0 Release'
+          with open('release_notes.md', 'w', encoding='utf-8') as f:
+              f.write(notes)
+          "
+
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
+          body_path: release_notes.md
           files: dist/*
