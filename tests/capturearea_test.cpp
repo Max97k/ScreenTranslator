@@ -64,7 +64,8 @@ TEST_F(CaptureAreaTest, ValidTask) {
     EXPECT_EQ(task->capturePoint, offset + QPoint(10, 10));
     EXPECT_EQ(task->sourceLanguage, "eng");
     EXPECT_EQ(task->targetLanguage, "rus");
-    EXPECT_EQ(task->translators, QStringList{"google.js"});
+    EXPECT_EQ(task->translators.size(), 1);
+    EXPECT_EQ(task->translators.first(), "google.js");
     EXPECT_TRUE(task->error.isEmpty());
 }
 
