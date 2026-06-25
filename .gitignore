@@ -33,3 +33,4 @@ benchmark_updates.cpp
 benchmark_updates.o
 test_afr.traineddata
 test_screen_translator.exe
+mcp_codebase_visualization.html
