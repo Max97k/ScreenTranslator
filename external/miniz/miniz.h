@@ -47,7 +47,7 @@
 
      - Archive reading: Just call this function to read a single file from a disk archive:
 
-      void *mz_zip_extract_archive_file_to_heap(const char *pZip_filename, const char *pArchive_name,
+      void *mz_zip_extract_archive_file_to_heap(const char *pZip_filename, const char *pArchive_name_in_zip,
         size_t *pSize, mz_uint zip_flags);
 
      For more complex cases, use the "mz_zip_reader" functions. Upon opening an archive, the entire central
@@ -75,7 +75,7 @@
 
      - Archive appending: The simple way to add a single file to an archive is to call this function:
 
-      mz_bool mz_zip_add_mem_to_archive_file_in_place(const char *pZip_filename, const char *pArchive_name,
+      mz_bool mz_zip_add_mem_to_archive_file_in_place(const char *pZip_filename, const char *pArchive_name_in_zip,
         const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags);
 
      The archive will be created if it doesn't already exist, otherwise it'll be appended to.
@@ -1269,30 +1269,30 @@ mz_bool mz_zip_writer_init_from_reader_v2(mz_zip_archive *pZip, const char *pFil
 /* Adds the contents of a memory buffer to an archive. These functions record the current local time into the archive. */
 /* To add a directory entry, call this method with an archive name ending in a forwardslash with an empty buffer. */
 /* level_and_flags - compression level (0-10, see MZ_BEST_SPEED, MZ_BEST_COMPRESSION, etc.) logically OR'd with zero or more mz_zip_flags, or just set to MZ_DEFAULT_COMPRESSION. */
-mz_bool mz_zip_writer_add_mem(mz_zip_archive *pZip, const char *pArchive_name, const void *pBuf, size_t buf_size, mz_uint level_and_flags);
+mz_bool mz_zip_writer_add_mem(mz_zip_archive *pZip, const char *pArchive_name_in_zip, const void *pBuf, size_t buf_size, mz_uint level_and_flags);
 
 /* Like mz_zip_writer_add_mem(), except you can specify a file comment field, and optionally supply the function with already compressed data. */
 /* uncomp_size/uncomp_crc32 are only used if the MZ_ZIP_FLAG_COMPRESSED_DATA flag is specified. */
-mz_bool mz_zip_writer_add_mem_ex(mz_zip_archive *pZip, const char *pArchive_name, const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags,
+mz_bool mz_zip_writer_add_mem_ex(mz_zip_archive *pZip, const char *pArchive_name_in_zip, const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags,
                                  mz_uint64 uncomp_size, mz_uint32 uncomp_crc32);
 
-mz_bool mz_zip_writer_add_mem_ex_v2(mz_zip_archive *pZip, const char *pArchive_name, const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags,
+mz_bool mz_zip_writer_add_mem_ex_v2(mz_zip_archive *pZip, const char *pArchive_name_in_zip, const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags,
                                     mz_uint64 uncomp_size, mz_uint32 uncomp_crc32, MZ_TIME_T *last_modified, const char *user_extra_data_local, mz_uint user_extra_data_local_len,
                                     const char *user_extra_data_central, mz_uint user_extra_data_central_len);
 
 /* Adds the contents of a file to an archive. This function also records the disk file's modified time into the archive. */
 /* File data is supplied via a read callback function. User mz_zip_writer_add_(c)file to add a file directly.*/
-mz_bool mz_zip_writer_add_read_buf_callback(mz_zip_archive *pZip, const char *pArchive_name, mz_file_read_func read_callback, void* callback_opaque, mz_uint64 size_to_add,
+mz_bool mz_zip_writer_add_read_buf_callback(mz_zip_archive *pZip, const char *pArchive_name_in_zip, mz_file_read_func read_callback, void* callback_opaque, mz_uint64 size_to_add,
 	const MZ_TIME_T *pFile_time, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags, const char *user_extra_data_local, mz_uint user_extra_data_local_len,
 	const char *user_extra_data_central, mz_uint user_extra_data_central_len);
 
 #ifndef MINIZ_NO_STDIO
 /* Adds the contents of a disk file to an archive. This function also records the disk file's modified time into the archive. */
 /* level_and_flags - compression level (0-10, see MZ_BEST_SPEED, MZ_BEST_COMPRESSION, etc.) logically OR'd with zero or more mz_zip_flags, or just set to MZ_DEFAULT_COMPRESSION. */
-mz_bool mz_zip_writer_add_file(mz_zip_archive *pZip, const char *pArchive_name, const char *pSrc_filename, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags);
+mz_bool mz_zip_writer_add_file(mz_zip_archive *pZip, const char *pArchive_name_in_zip, const char *pSrc_filename, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags);
 
 /* Like mz_zip_writer_add_file(), except the file data is read from the specified FILE stream. */
-mz_bool mz_zip_writer_add_cfile(mz_zip_archive *pZip, const char *pArchive_name, MZ_FILE *pSrc_file, mz_uint64 size_to_add,
+mz_bool mz_zip_writer_add_cfile(mz_zip_archive *pZip, const char *pArchive_name_in_zip, MZ_FILE *pSrc_file, mz_uint64 size_to_add,
                                 const MZ_TIME_T *pFile_time, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags, const char *user_extra_data_local, mz_uint user_extra_data_local_len,
                                 const char *user_extra_data_central, mz_uint user_extra_data_central_len);
 #endif
@@ -1320,14 +1320,14 @@ mz_bool mz_zip_writer_end(mz_zip_archive *pZip);
 /* Note this is NOT a fully safe operation. If it crashes or dies in some way your archive can be left in a screwed up state (without a central directory). */
 /* level_and_flags - compression level (0-10, see MZ_BEST_SPEED, MZ_BEST_COMPRESSION, etc.) logically OR'd with zero or more mz_zip_flags, or just set to MZ_DEFAULT_COMPRESSION. */
 /* TODO: Perhaps add an option to leave the existing central dir in place in case the add dies? We could then truncate the file (so the old central dir would be at the end) if something goes wrong. */
-mz_bool mz_zip_add_mem_to_archive_file_in_place(const char *pZip_filename, const char *pArchive_name, const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags);
-mz_bool mz_zip_add_mem_to_archive_file_in_place_v2(const char *pZip_filename, const char *pArchive_name, const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags, mz_zip_error *pErr);
+mz_bool mz_zip_add_mem_to_archive_file_in_place(const char *pZip_filename, const char *pArchive_name_in_zip, const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags);
+mz_bool mz_zip_add_mem_to_archive_file_in_place_v2(const char *pZip_filename, const char *pArchive_name_in_zip, const void *pBuf, size_t buf_size, const void *pComment, mz_uint16 comment_size, mz_uint level_and_flags, mz_zip_error *pErr);
 
 /* Reads a single file from an archive into a heap block. */
 /* If pComment is not NULL, only the file with the specified comment will be extracted. */
 /* Returns NULL on failure. */
-void *mz_zip_extract_archive_file_to_heap(const char *pZip_filename, const char *pArchive_name, size_t *pSize, mz_uint flags);
-void *mz_zip_extract_archive_file_to_heap_v2(const char *pZip_filename, const char *pArchive_name, const char *pComment, size_t *pSize, mz_uint flags, mz_zip_error *pErr);
+void *mz_zip_extract_archive_file_to_heap(const char *pZip_filename, const char *pArchive_name_in_zip, size_t *pSize, mz_uint flags);
+void *mz_zip_extract_archive_file_to_heap_v2(const char *pZip_filename, const char *pArchive_name_in_zip, const char *pComment, size_t *pSize, mz_uint flags, mz_zip_error *pErr);
 
 #endif /* #ifndef MINIZ_NO_ARCHIVE_WRITING_APIS */
 
