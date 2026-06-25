@@ -5883,11 +5883,6 @@ mz_bool mz_zip_writer_init_from_reader_v2(mz_zip_archive *pZip, const char *pFil
     pZip->m_archive_size = pZip->m_central_directory_file_ofs;
     pZip->m_central_directory_file_ofs = 0;
 
-    /* Clear the sorted central dir offsets, they aren't useful or maintained now. */
-    /* Even though we're now in write mode, files can still be extracted and verified, but file locates will be slow. */
-    /* TODO: We could easily maintain the sorted central directory offsets. */
-    mz_zip_array_clear(pZip, &pZip->m_pState->m_sorted_central_dir_offsets);
-
     pZip->m_zip_mode = MZ_ZIP_MODE_WRITING;
 
     return MZ_TRUE;
@@ -6037,6 +6032,44 @@ static mz_bool mz_zip_writer_add_to_central_dir(mz_zip_archive *pZip, const char
         /* Try to resize the central directory array back into its original state. */
         mz_zip_array_resize(pZip, &pState->m_central_dir, orig_central_dir_size, MZ_FALSE);
         return mz_zip_set_error(pZip, MZ_ZIP_ALLOC_FAILED);
+    }
+
+    if ((pZip->m_pState->m_init_flags & MZ_ZIP_FLAG_DO_NOT_SORT_CENTRAL_DIRECTORY) == 0)
+    {
+        mz_uint32 file_index = (mz_uint32)(pState->m_central_dir_offsets.m_size / sizeof(mz_uint32)) - 1;
+        if (pState->m_sorted_central_dir_offsets.m_size == file_index * sizeof(mz_uint32))
+        {
+            if (!mz_zip_array_push_back(pZip, &pState->m_sorted_central_dir_offsets, &file_index, 1))
+            {
+                /* If this fails, we can't maintain the sorted directory. We shouldn't fail the whole archive though, maybe just clear it so binary search falls back to linear search. */
+                mz_zip_array_clear(pZip, &pState->m_sorted_central_dir_offsets);
+            }
+            else
+            {
+                /* Bubble up the new entry to its correct sorted position. */
+                mz_uint32 *pIndices = (mz_uint32 *)pState->m_sorted_central_dir_offsets.m_p;
+                mz_uint32 i = file_index;
+                while (i > 0)
+                {
+                    if (mz_zip_reader_filename_less(&pState->m_central_dir, &pState->m_central_dir_offsets, pIndices[i], pIndices[i - 1]))
+                    {
+                        mz_uint32 t = pIndices[i];
+                        pIndices[i] = pIndices[i - 1];
+                        pIndices[i - 1] = t;
+                        i--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            /* If the sorted array is out of sync, clear it so binary search isn't used with invalid data. */
+            mz_zip_array_clear(pZip, &pState->m_sorted_central_dir_offsets);
+        }
     }
 
     return MZ_TRUE;
