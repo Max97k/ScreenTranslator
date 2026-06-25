@@ -20,6 +20,9 @@ c.run('qmake {} "{}"'.format(os.environ.get('QMAKE_FLAGS', ''), test_pro_file))
 make_cmd = c.get_make_cmd()
 c.run(make_cmd)
 
+if platform.system() != "Windows":
+    os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+
 for file in glob.glob('./**/tests*', recursive=True):
     print(file)
     c.run(file, silent=False)
