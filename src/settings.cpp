@@ -135,17 +135,87 @@ void cleanupOutdated(QSettings& settings)
 
 }  // namespace
 
+Settings::Settings(const Settings& other)
+{
+  *this = other;
+}
+
+Settings& Settings::operator=(const Settings& other)
+{
+  if (this == &other)
+    return *this;
+
+  std::lock_guard<std::mutex> lock(mutex_);
+  // We only copy the configuration data, not the underlying qsettings_ cache or mutex.
+
+  captureHotkey = other.captureHotkey;
+  repeatCaptureHotkey = other.repeatCaptureHotkey;
+  showLastHotkey = other.showLastHotkey;
+  clipboardHotkey = other.clipboardHotkey;
+  captureLockedHotkey = other.captureLockedHotkey;
+  showMessageOnStart = other.showMessageOnStart;
+  runAtSystemStart = other.runAtSystemStart;
+  proxyType = other.proxyType;
+  proxyHostName = other.proxyHostName;
+  proxyPort = other.proxyPort;
+  proxyUser = other.proxyUser;
+  proxyPassword = other.proxyPassword;
+  proxySavePassword = other.proxySavePassword;
+  autoUpdateIntervalDays = other.autoUpdateIntervalDays;
+  lastUpdateCheck = other.lastUpdateCheck;
+  useHunspell = other.useHunspell;
+  hunspellPath = other.hunspellPath;
+  userSubstitutions = other.userSubstitutions;
+  useUserSubstitutions = other.useUserSubstitutions;
+  writeTrace = other.writeTrace;
+  tessdataPath = other.tessdataPath;
+  sourceLanguage = other.sourceLanguage;
+  doTranslation = other.doTranslation;
+  ignoreSslErrors = other.ignoreSslErrors;
+  targetLanguage = other.targetLanguage;
+  translationTimeout = other.translationTimeout;
+  translatorsPath = other.translatorsPath;
+  translators = other.translators;
+  googleCloudApiKey = other.googleCloudApiKey;
+  resultShowType = other.resultShowType;
+  fontFamily = other.fontFamily;
+  fontSize = other.fontSize;
+  fontColor = other.fontColor;
+  backgroundColor = other.backgroundColor;
+  showRecognized = other.showRecognized;
+  showCaptured = other.showCaptured;
+
+  // Note: we purposefully do not copy qsettings_
+  // If isPortable_ changes, we must reset the local qsettings_ cache.
+  if (isPortable_ != other.isPortable_) {
+    isPortable_ = other.isPortable_;
+    qsettings_.reset();
+  }
+
+  return *this;
+}
+
+QSettings& Settings::qsettings() const
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  if (!qsettings_) {
+    const auto iniName = iniFileName();
+    if (isPortable_) {
+      qsettings_ = std::make_unique<QSettings>(iniName, QSettings::IniFormat);
+    } else {
+      qsettings_ = std::make_unique<QSettings>();
+    }
+  }
+  return *qsettings_;
+}
+
 void Settings::save() const
 {
-  std::unique_ptr<QSettings> ptr;
   const auto iniName = iniFileName();
-  if (isPortable_) {
-    ptr = std::make_unique<QSettings>(iniName, QSettings::IniFormat);
-  } else {
-    ptr = std::make_unique<QSettings>();
+  if (!isPortable_) {
     QFile::remove(iniName);
   }
-  auto& settings = *ptr;
+  auto& settings = qsettings();
 
   settings.beginGroup(qs_guiGroup);
 
@@ -213,20 +283,14 @@ void Settings::save() const
   }
 
   cleanupOutdated(settings);
+  settings.sync();
 }
 
 void Settings::load()
 {
-  std::unique_ptr<QSettings> ptr;
   const auto iniName = iniFileName();
-  if (QFile::exists(iniName)) {
-    ptr = std::make_unique<QSettings>(iniName, QSettings::IniFormat);
-    setPortable(true);
-  } else {
-    ptr = std::make_unique<QSettings>();
-    setPortable(false);
-  }
-  auto& settings = *ptr;
+  setPortable(QFile::exists(iniName));
+  auto& settings = qsettings();
 
   settings.beginGroup(qs_guiGroup);
 
@@ -312,18 +376,12 @@ void Settings::load()
 
 void Settings::saveLastUpdateCheck()
 {
-  std::unique_ptr<QSettings> ptr;
-  const auto iniName = iniFileName();
-  if (QFile::exists(iniName)) {
-    ptr = std::make_unique<QSettings>(iniName, QSettings::IniFormat);
-  } else {
-    ptr = std::make_unique<QSettings>();
-  }
-  auto& settings = *ptr;
+  auto& settings = qsettings();
 
   settings.beginGroup(qs_guiGroup);
   settings.setValue(qs_lastUpdateCheck, lastUpdateCheck);
   settings.endGroup();
+  settings.sync();
 }
 
 bool Settings::isPortable() const
@@ -333,7 +391,13 @@ bool Settings::isPortable() const
 
 void Settings::setPortable(bool isPortable)
 {
-  isPortable_ = isPortable;
+  {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (isPortable_ != isPortable) {
+      isPortable_ = isPortable;
+      qsettings_.reset();
+    }
+  }
 
   const auto baseDataPath =
       (isPortable ? QApplication::applicationDirPath()

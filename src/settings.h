@@ -8,6 +8,9 @@
 
 #include <chrono>
 #include <map>
+#include <memory>
+#include <mutex>
+#include <QSettings>
 
 enum class ResultMode { Widget, Tooltip };
 
@@ -22,6 +25,10 @@ enum class ProxyType { Disabled, System, Socks5, Http };
 class Settings
 {
 public:
+  Settings() = default;
+  Settings(const Settings& other);
+  Settings& operator=(const Settings& other);
+
   void save() const;
   void load();
 
@@ -76,5 +83,9 @@ public:
   bool showCaptured{true};
 
 private:
+  QSettings& qsettings() const;
+
   bool isPortable_{false};
+  mutable std::mutex mutex_;
+  mutable std::unique_ptr<QSettings> qsettings_;
 };
