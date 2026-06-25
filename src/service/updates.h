@@ -3,6 +3,7 @@
 #include <QDate>
 #include <QStyledItemDelegate>
 #include <QUrl>
+#include <optional>
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -22,6 +23,7 @@ struct File {
   QString md5;
   QDateTime versionDate;
   int progress{0};
+  std::optional<State> state;
 };
 
 class UpdateDelegate : public QStyledItemDelegate
@@ -43,6 +45,7 @@ public:
 
   QString parse(const QByteArray& data);
   void setExpansions(const QHash<QString, QString>& expansions);
+  void invalidate(const File& file);
   void updateStates();
   bool hasUpdates() const;
   void updateProgress(const QUrl& url, int progress);

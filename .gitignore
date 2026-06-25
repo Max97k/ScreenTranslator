@@ -27,3 +27,9 @@ __pycache__/
 # Jules API outputs and temporary downloads
 jules_out.txt
 DownloadedApp/
+benchmark
+benchmark.pro
+benchmark_updates.cpp
+benchmark_updates.o
+test_afr.traineddata
+test_screen_translator.exe

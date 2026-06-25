@@ -290,7 +290,32 @@ void Model::updateProgress(const QUrl &url, int progress)
 void Model::setExpansions(const QHash<QString, QString> &expansions)
 {
   expansions_ = expansions;
+  auto visitor = [](Component &component, auto v) -> void {
+    for (auto &file : component.files) {
+      file.state.reset();
+      file.expandedPath.clear();
+    }
+    for (auto &child : component.children) v(*child, v);
+  };
+  if (root_)
+    visitor(*root_, visitor);
   updateStates();
+}
+
+void Model::invalidate(const File &fileToInvalidate)
+{
+  if (!root_)
+    return;
+
+  auto visitor = [&fileToInvalidate](Component &component, auto v) -> void {
+    for (auto &file : component.files) {
+      if (file.rawPath == fileToInvalidate.rawPath) {
+        file.state.reset();
+      }
+    }
+    for (auto &child : component.children) v(*child, v);
+  };
+  visitor(*root_, visitor);
 }
 
 void Model::updateStates()
@@ -302,9 +327,11 @@ void Model::updateStates()
     if (!component.files.empty()) {
       component.state = State::Actual;
       for (auto &file : component.files) {
-        file.expandedPath = expanded(file.rawPath);
-        const auto fileState = currentState(file);
-        component.state = std::min(component.state, fileState);
+        if (file.expandedPath.isEmpty())
+          file.expandedPath = expanded(file.rawPath);
+        if (!file.state.has_value())
+          file.state = currentState(file);
+        component.state = std::min(component.state, file.state.value());
       }
       auto index = toIndex(component, int(Column::State));
       emit dataChanged(index, index, {Qt::DisplayRole});
@@ -794,6 +821,7 @@ void Updater::applyAction(Action action, const QVector<File> &files)
         emit error(installer.error());
         continue;
       }
+      model_->invalidate(file);
       model_->updateStates();
       emit updated();
       continue;
@@ -858,6 +886,7 @@ void Updater::downloaded(const QUrl &url, const QByteArray &data)
     return;
   }
 
+  model_->invalidate(file);
   model_->updateStates();
   emit updated();
 }
