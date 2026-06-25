@@ -1,4 +1,4 @@
-﻿#include "updates.h"
+#include "updates.h"
 #include "debug.h"
 
 #include <QApplication>

@@ -3,6 +3,7 @@
 #include "updates.h"
 
 #include <QDebug>
+#include <QDir>
 #include <QFileInfo>
 #include <QSignalSpy>
 
@@ -73,7 +74,7 @@ TEST(UpdateInstaller, FailInstallNoWritable)
   QFile f(t1);
   ASSERT_FALSE(f.isWritable());
 
-  Installer testee;
+  Installer testee({QDir::currentPath(), "/"});
   testee.install(toFile(t1), data);
   ASSERT_FALSE(testee.error().isEmpty());
 }
@@ -121,9 +122,25 @@ TEST(UpdateInstaller, FailRemove)
     return;
   ASSERT_FALSE(QFile::copy(f1, f1 + "1"));  // non writable
 
-  Installer testee;
+  Installer testee({QDir::currentPath(), "/var/log"});
   testee.remove(toFile(f1));
   ASSERT_FALSE(testee.error().isEmpty());
+}
+
+TEST(UpdateInstaller, PathValidationSecurity)
+{
+  Installer testee({"test"});
+
+  testee.remove(toFile("../malicious.txt"));
+  ASSERT_FALSE(testee.error().isEmpty());
+
+  Installer testee2({"test"});
+  testee2.install(toFile("../malicious.txt"), data);
+  ASSERT_FALSE(testee2.error().isEmpty());
+
+  Installer testee3({"test"});
+  testee3.install(toFile("test-malicious/test.txt"), data);
+  ASSERT_FALSE(testee3.error().isEmpty());
 }
 
 TEST(UpdateModel, ParseFail)
