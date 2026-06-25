@@ -12,6 +12,8 @@
 #include <mutex>
 #include <QSettings>
 
+class QSettings;
+
 enum class ResultMode { Widget, Tooltip };
 
 struct Substitution {
@@ -84,6 +86,18 @@ public:
 
 private:
   QSettings& qsettings() const;
+
+  void loadGui(QSettings& settings);
+  void loadRecognition(QSettings& settings);
+  void loadCorrection(QSettings& settings);
+  void loadTranslation(QSettings& settings);
+  void loadRepresentation(QSettings& settings);
+
+  void saveGui(QSettings& settings) const;
+  void saveRecognition(QSettings& settings) const;
+  void saveCorrection(QSettings& settings) const;
+  void saveTranslation(QSettings& settings) const;
+  void saveRepresentation(QSettings& settings) const;
 
   bool isPortable_{false};
   mutable std::mutex mutex_;
