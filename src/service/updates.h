@@ -105,13 +105,18 @@ private:
 class Installer
 {
 public:
+  explicit Installer(const QStringList& allowedPaths = {});
+
   void remove(const File& file);
   void install(const File& file, const QByteArray& data);
   void checkInstall(const File& file);
   const QString& error() const;
 
 private:
+  bool isPathAllowed(const QString& path) const;
+
   QString error_;
+  QStringList allowedPaths_;
 };
 
 class AutoChecker : public QObject
@@ -168,6 +173,7 @@ private:
   std::unique_ptr<AutoChecker> autoChecker_;
   QVector<QUrl> updateUrls_;
   QVector<File> downloading_;
+  QHash<QString, QString> expansions_;
 };
 
 }  // namespace update

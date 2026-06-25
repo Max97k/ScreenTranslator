@@ -50,7 +50,7 @@ TEST(UpdateInstaller, SuccessInstall)
 {
   ASSERT_TRUE(removeFile(t1));
 
-  Installer testee;
+  Installer testee({"test"});
   testee.install(toFile(t1), data);
   ASSERT_EQ(data, readFile(t1));
   ASSERT_TRUE(testee.error().isEmpty());
@@ -60,7 +60,7 @@ TEST(UpdateInstaller, SuccessRemove)
 {
   ASSERT_TRUE(writeFile(f1, data));
 
-  Installer testee;
+  Installer testee({QFileInfo(f1).absolutePath()});
   testee.remove(toFile(f1));
   ASSERT_FALSE(QFile::exists(f1));
   ASSERT_TRUE(testee.error().isEmpty());
@@ -78,6 +78,40 @@ TEST(UpdateInstaller, FailInstallNoWritable)
   ASSERT_FALSE(testee.error().isEmpty());
 }
 #endif
+
+TEST(UpdateInstaller, PathValidation)
+{
+  Installer testee({"allowed_dir"});
+
+  // Path inside allowed_dir
+  testee.install(toFile("allowed_dir/to1.txt"), data);
+  ASSERT_TRUE(testee.error().isEmpty());
+
+  // Path outside allowed_dir
+  testee.install(toFile("unallowed_dir/to2.txt"), data);
+  ASSERT_FALSE(testee.error().isEmpty());
+
+  // Directory traversal
+  Installer testee2({"allowed_dir"});
+  testee2.install(toFile("allowed_dir/../unallowed_dir/to3.txt"), data);
+  ASSERT_FALSE(testee2.error().isEmpty());
+
+  // Partial path match vulnerability (e.g. "allowed_dir_malicious")
+  Installer testee3({"allowed_dir"});
+  testee3.install(toFile("allowed_dir_malicious/to4.txt"), data);
+  ASSERT_FALSE(testee3.error().isEmpty());
+
+  // Case sensitivity test (if applicable)
+#if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
+  Installer testee4({"allowed_dir"});
+  testee4.install(toFile("ALLOWED_DIR/to5.txt"), data);
+  ASSERT_TRUE(testee4.error().isEmpty());
+#else
+  Installer testee4({"allowed_dir"});
+  testee4.install(toFile("ALLOWED_DIR/to5.txt"), data);
+  ASSERT_FALSE(testee4.error().isEmpty());
+#endif
+}
 
 TEST(UpdateInstaller, FailRemove)
 {

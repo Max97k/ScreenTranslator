@@ -620,8 +620,45 @@ void UpdateDelegate::paint(QPainter *painter,
 
 //
 
+Installer::Installer(const QStringList &allowedPaths)
+  : allowedPaths_(allowedPaths)
+{
+}
+
+bool Installer::isPathAllowed(const QString &path) const
+{
+  if (allowedPaths_.isEmpty())
+    return false;
+
+  const auto absolutePath = QDir::cleanPath(QFileInfo(path).absoluteFilePath());
+
+#if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
+  const auto cs = Qt::CaseInsensitive;
+#else
+  const auto cs = Qt::CaseSensitive;
+#endif
+
+  for (const auto &allowedPath : allowedPaths_) {
+    auto cleanedAllowedPath =
+        QDir::cleanPath(QFileInfo(allowedPath).absoluteFilePath());
+    if (!cleanedAllowedPath.endsWith(QLatin1Char('/')))
+      cleanedAllowedPath += QLatin1Char('/');
+
+    if (absolutePath.compare(cleanedAllowedPath.chopped(1), cs) == 0 ||
+        absolutePath.startsWith(cleanedAllowedPath, cs))
+      return true;
+  }
+  return false;
+}
+
 void Installer::checkInstall(const File &file)
 {
+  if (!isPathAllowed(file.expandedPath)) {
+    error_ += QApplication::translate("Updates", "Path is not allowed\n%1")
+                  .arg(file.expandedPath);
+    return;
+  }
+
   QFileInfo installDir(QFileInfo(file.expandedPath).absolutePath());
   if (installDir.exists() && !installDir.isWritable()) {
     error_ +=
@@ -632,6 +669,12 @@ void Installer::checkInstall(const File &file)
 
 void Installer::remove(const File &file)
 {
+  if (!isPathAllowed(file.expandedPath)) {
+    error_ += QApplication::translate("Updates", "Path is not allowed\n%1")
+                  .arg(file.expandedPath);
+    return;
+  }
+
   QFile f(file.expandedPath);
   if (!f.exists())
     return;
@@ -645,6 +688,12 @@ void Installer::remove(const File &file)
 
 void Installer::install(const File &file, const QByteArray &data)
 {
+  if (!isPathAllowed(file.expandedPath)) {
+    error_ += QApplication::translate("Updates", "Path is not allowed\n%1")
+                  .arg(file.expandedPath);
+    return;
+  }
+
   auto installDir = QFileInfo(file.expandedPath).absoluteDir();
   if (!installDir.exists() && !installDir.mkpath(".")) {
     error_ += QApplication::translate("Updates", "Failed to create path\n%1")
@@ -774,6 +823,7 @@ void Updater::initView(QTreeView *view)
 
 void Updater::setExpansions(const QHash<QString, QString> &expansions)
 {
+  expansions_ = expansions;
   model_->setExpansions(expansions);
 }
 
@@ -788,7 +838,7 @@ void Updater::applyAction(Action action, const QVector<File> &files)
     LTRACE() << "applyAction" << int(action) << file.rawPath;
 
     if (action == Action::Remove) {
-      Installer installer;
+      Installer installer(expansions_.values());
       installer.remove(file);
       if (!installer.error().isEmpty()) {
         emit error(installer.error());
@@ -803,7 +853,7 @@ void Updater::applyAction(Action action, const QVector<File> &files)
       if (file.urls.isEmpty() || findDownload(file.urls.first()) != -1)
         continue;
 
-      Installer installer;
+      Installer installer(expansions_.values());
       installer.checkInstall(file);
 
       if (!installer.error().isEmpty()) {
@@ -851,7 +901,7 @@ void Updater::downloaded(const QUrl &url, const QByteArray &data)
     return;
   }
 
-  Installer installer;
+  Installer installer(expansions_.values());
   installer.install(file, unpacked);
   if (!installer.error().isEmpty()) {
     emit error(installer.error());
