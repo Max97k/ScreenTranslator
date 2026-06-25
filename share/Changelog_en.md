@@ -1,5 +1,13 @@
 # Changes
 
+## 4.0.0
+
+* Replaced Tesseract OCR with Windows Native OCR (WinRT APIs), eliminating the need for downloading or managing external Tesseract language files.
+* Replaced QWebEngine browser and JavaScript scraper translators with native C++ Google Cloud Translation API client.
+* Completely removed QWebEngine, Leptonica, Tesseract, and WebEngine sandbox dependencies, resulting in a lighter and faster application.
+* Bounded OpenSSL compatibility to 1.1.1w for TLS network stability.
+* Removed automatic update check on startup as packages are now modernized.
+
 ## 3.3.0
 
 * Use single tesseract library (not optimized and compatible versions)
