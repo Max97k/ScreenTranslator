@@ -60,7 +60,7 @@ Manager::Manager()
   if (settings_->showMessageOnStart)
     tray_->showInformation(QObject::tr("Screen translator started"));
 
-  warnIfOutdated();
+  // warnIfOutdated();
 
   QObject::connect(updater_.get(), &update::Updater::error,  //
                    tray_.get(), &TrayIcon::showError);
