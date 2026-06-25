@@ -147,6 +147,22 @@ void Settings::save() const
   }
   auto& settings = *ptr;
 
+  saveGui(settings);
+  saveRecognition(settings);
+  saveCorrection(settings);
+  saveTranslation(settings);
+  saveRepresentation(settings);
+
+  if (service::RunAtSystemStart::isAvailable()) {
+    if (runAtSystemStart != service::RunAtSystemStart::isEnabled())
+      service::RunAtSystemStart::setEnabled(runAtSystemStart);
+  }
+
+  cleanupOutdated(settings);
+}
+
+void Settings::saveGui(QSettings& settings) const
+{
   settings.beginGroup(qs_guiGroup);
 
   settings.setValue(qs_captureHotkey, captureHotkey);
@@ -174,17 +190,26 @@ void Settings::save() const
   settings.setValue(qs_lastUpdateCheck, lastUpdateCheck);
 
   settings.endGroup();
+}
 
+void Settings::saveRecognition(QSettings& settings) const
+{
   settings.beginGroup(qs_recogntionGroup);
   settings.setValue(qs_ocrLanguage, sourceLanguage);
   settings.endGroup();
+}
 
+void Settings::saveCorrection(QSettings& settings) const
+{
   settings.beginGroup(qs_correctionGroup);
   settings.setValue(qs_useHunspell, useHunspell);
   settings.setValue(qs_useUserSubstitutions, useUserSubstitutions);
   settings.setValue(qs_userSubstitutions, packSubstitutions(userSubstitutions));
   settings.endGroup();
+}
 
+void Settings::saveTranslation(QSettings& settings) const
+{
   settings.beginGroup(qs_translationGroup);
 
   settings.setValue(qs_doTranslation, doTranslation);
@@ -195,7 +220,10 @@ void Settings::save() const
   settings.setValue(qs_googleCloudApiKey, googleCloudApiKey);
 
   settings.endGroup();
+}
 
+void Settings::saveRepresentation(QSettings& settings) const
+{
   settings.beginGroup(qs_representationGroup);
 
   settings.setValue(qs_fontFamily, fontFamily);
@@ -206,13 +234,6 @@ void Settings::save() const
   settings.setValue(qs_showCaptured, showCaptured);
 
   settings.endGroup();
-
-  if (service::RunAtSystemStart::isAvailable()) {
-    if (runAtSystemStart != service::RunAtSystemStart::isEnabled())
-      service::RunAtSystemStart::setEnabled(runAtSystemStart);
-  }
-
-  cleanupOutdated(settings);
 }
 
 void Settings::load()
@@ -228,6 +249,15 @@ void Settings::load()
   }
   auto& settings = *ptr;
 
+  loadGui(settings);
+  loadRecognition(settings);
+  loadCorrection(settings);
+  loadTranslation(settings);
+  loadRepresentation(settings);
+}
+
+void Settings::loadGui(QSettings& settings)
+{
   settings.beginGroup(qs_guiGroup);
 
   captureHotkey = settings.value(qs_captureHotkey, captureHotkey).toString();
@@ -262,11 +292,17 @@ void Settings::load()
       settings.value(qs_lastUpdateCheck, lastUpdateCheck).toDateTime();
 
   settings.endGroup();
+}
 
+void Settings::loadRecognition(QSettings& settings)
+{
   settings.beginGroup(qs_recogntionGroup);
   sourceLanguage = settings.value(qs_ocrLanguage, sourceLanguage).toString();
   settings.endGroup();
+}
 
+void Settings::loadCorrection(QSettings& settings)
+{
   settings.beginGroup(qs_correctionGroup);
   useHunspell = settings.value(qs_useHunspell, useHunspell).toBool();
   useUserSubstitutions =
@@ -276,7 +312,10 @@ void Settings::load()
   if (userSubstitutions.empty())
     userSubstitutions = loadLegacySubstitutions();
   settings.endGroup();
+}
 
+void Settings::loadTranslation(QSettings& settings)
+{
   settings.beginGroup(qs_translationGroup);
 
   doTranslation = settings.value(qs_doTranslation, doTranslation).toBool();
@@ -293,7 +332,10 @@ void Settings::load()
   googleCloudApiKey = settings.value(qs_googleCloudApiKey, googleCloudApiKey).toString();
 
   settings.endGroup();
+}
 
+void Settings::loadRepresentation(QSettings& settings)
+{
   settings.beginGroup(qs_representationGroup);
 
   const auto defaultFont = QApplication::font().family();
