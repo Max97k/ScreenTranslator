@@ -3,7 +3,7 @@ CONFIG -= app_bundle
 
 QT += widgets network testlib
 
-INCLUDEPATH += $$PWD/../external $$PWD/../src/service
+INCLUDEPATH += $$PWD/../external $$PWD/../src/service $$PWD/../src $$PWD/../src/capture
 
 HEADERS += \
   ../src/service/updates.h \
@@ -16,8 +16,10 @@ SOURCES += \
   ../src/service/updates.cpp \
   ../src/service/debug.cpp \
   ../external/miniz/miniz.c \
+  ../src/capture/capturearea.cpp \
   geometryutils_test.cpp \
   main.cpp \
   updates_test.cpp \
   mocknetworkaccessmanager.cpp \
-  translation_pipeline_test.cpp
+  translation_pipeline_test.cpp \
+  capturearea_test.cpp
