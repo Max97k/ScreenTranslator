@@ -8,6 +8,7 @@ INCLUDEPATH += $$PWD/../external $$PWD/../src/service
 HEADERS += \
   ../src/languagecodes.h \
   ../src/service/updates.h \
+  ../src/service/widgetstate.h \
   ../src/task.h \
   mocknetworkaccessmanager.h
 
@@ -16,11 +17,13 @@ SOURCES += \
   ../src/languagecodes.cpp \
   ../src/service/geometryutils.cpp \
   ../src/service/updates.cpp \
+  ../src/service/widgetstate.cpp \
   ../src/service/debug.cpp \
   ../external/miniz/miniz.c \
   geometryutils_test.cpp \
   languagecodes_test.cpp \
   main.cpp \
   updates_test.cpp \
+  widgetstate_test.cpp \
   mocknetworkaccessmanager.cpp \
   translation_pipeline_test.cpp
