@@ -620,8 +620,35 @@ void UpdateDelegate::paint(QPainter *painter,
 
 //
 
+Installer::Installer(const QList<QString> &allowedPaths)
+  : allowedPaths_(allowedPaths)
+{
+}
+
+bool Installer::isSafe(const QString &path) const
+{
+  if (allowedPaths_.isEmpty())
+    return false;
+
+  const auto targetPath = QDir::cleanPath(QFileInfo(path).absoluteFilePath());
+  for (const auto &allowedPath : allowedPaths_) {
+    const auto safePath = QDir::cleanPath(QFileInfo(allowedPath).absoluteFilePath());
+    if (targetPath == safePath || targetPath.startsWith(safePath + "/")) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void Installer::checkInstall(const File &file)
 {
+  if (!isSafe(file.expandedPath)) {
+    error_ += QApplication::translate("Updates", "Invalid path\n%1")
+                  .arg(file.expandedPath);
+    return;
+  }
+
   QFileInfo installDir(QFileInfo(file.expandedPath).absolutePath());
   if (installDir.exists() && !installDir.isWritable()) {
     error_ +=
@@ -632,6 +659,12 @@ void Installer::checkInstall(const File &file)
 
 void Installer::remove(const File &file)
 {
+  if (!isSafe(file.expandedPath)) {
+    error_ += QApplication::translate("Updates", "Invalid path\n%1")
+                  .arg(file.expandedPath);
+    return;
+  }
+
   QFile f(file.expandedPath);
   if (!f.exists())
     return;
@@ -645,6 +678,12 @@ void Installer::remove(const File &file)
 
 void Installer::install(const File &file, const QByteArray &data)
 {
+  if (!isSafe(file.expandedPath)) {
+    error_ += QApplication::translate("Updates", "Invalid path\n%1")
+                  .arg(file.expandedPath);
+    return;
+  }
+
   auto installDir = QFileInfo(file.expandedPath).absoluteDir();
   if (!installDir.exists() && !installDir.mkpath(".")) {
     error_ += QApplication::translate("Updates", "Failed to create path\n%1")
@@ -774,6 +813,7 @@ void Updater::initView(QTreeView *view)
 
 void Updater::setExpansions(const QHash<QString, QString> &expansions)
 {
+  expansions_ = expansions;
   model_->setExpansions(expansions);
 }
 
@@ -788,7 +828,7 @@ void Updater::applyAction(Action action, const QVector<File> &files)
     LTRACE() << "applyAction" << int(action) << file.rawPath;
 
     if (action == Action::Remove) {
-      Installer installer;
+      Installer installer(expansions_.values());
       installer.remove(file);
       if (!installer.error().isEmpty()) {
         emit error(installer.error());
@@ -803,7 +843,7 @@ void Updater::applyAction(Action action, const QVector<File> &files)
       if (file.urls.isEmpty() || findDownload(file.urls.first()) != -1)
         continue;
 
-      Installer installer;
+      Installer installer(expansions_.values());
       installer.checkInstall(file);
 
       if (!installer.error().isEmpty()) {
@@ -851,7 +891,7 @@ void Updater::downloaded(const QUrl &url, const QByteArray &data)
     return;
   }
 
-  Installer installer;
+  Installer installer(expansions_.values());
   installer.install(file, unpacked);
   if (!installer.error().isEmpty()) {
     emit error(installer.error());
