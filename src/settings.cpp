@@ -135,6 +135,66 @@ void cleanupOutdated(QSettings& settings)
 
 }  // namespace
 
+Settings::Settings(const Settings& other)
+{
+  *this = other;
+}
+
+Settings& Settings::operator=(const Settings& other)
+{
+  if (this == &other)
+    return *this;
+
+  std::lock_guard<std::mutex> lock(mutex_);
+  // We only copy the configuration data, not the underlying qsettings_ cache or mutex.
+
+  captureHotkey = other.captureHotkey;
+  repeatCaptureHotkey = other.repeatCaptureHotkey;
+  showLastHotkey = other.showLastHotkey;
+  clipboardHotkey = other.clipboardHotkey;
+  captureLockedHotkey = other.captureLockedHotkey;
+  showMessageOnStart = other.showMessageOnStart;
+  runAtSystemStart = other.runAtSystemStart;
+  proxyType = other.proxyType;
+  proxyHostName = other.proxyHostName;
+  proxyPort = other.proxyPort;
+  proxyUser = other.proxyUser;
+  proxyPassword = other.proxyPassword;
+  proxySavePassword = other.proxySavePassword;
+  autoUpdateIntervalDays = other.autoUpdateIntervalDays;
+  lastUpdateCheck = other.lastUpdateCheck;
+  useHunspell = other.useHunspell;
+  hunspellPath = other.hunspellPath;
+  userSubstitutions = other.userSubstitutions;
+  useUserSubstitutions = other.useUserSubstitutions;
+  writeTrace = other.writeTrace;
+  tessdataPath = other.tessdataPath;
+  sourceLanguage = other.sourceLanguage;
+  doTranslation = other.doTranslation;
+  ignoreSslErrors = other.ignoreSslErrors;
+  targetLanguage = other.targetLanguage;
+  translationTimeout = other.translationTimeout;
+  translatorsPath = other.translatorsPath;
+  translators = other.translators;
+  googleCloudApiKey = other.googleCloudApiKey;
+  resultShowType = other.resultShowType;
+  fontFamily = other.fontFamily;
+  fontSize = other.fontSize;
+  fontColor = other.fontColor;
+  backgroundColor = other.backgroundColor;
+  showRecognized = other.showRecognized;
+  showCaptured = other.showCaptured;
+
+  // Note: we purposefully do not copy qsettings_
+  // If isPortable_ changes, we must reset the local qsettings_ cache.
+  if (isPortable_ != other.isPortable_) {
+    isPortable_ = other.isPortable_;
+    qsettings_.reset();
+  }
+
+  return *this;
+}
+
 QSettings& Settings::qsettings() const
 {
   std::lock_guard<std::mutex> lock(mutex_);

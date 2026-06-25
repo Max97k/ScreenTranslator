@@ -25,6 +25,10 @@ enum class ProxyType { Disabled, System, Socks5, Http };
 class Settings
 {
 public:
+  Settings() = default;
+  Settings(const Settings& other);
+  Settings& operator=(const Settings& other);
+
   void save() const;
   void load();
 
