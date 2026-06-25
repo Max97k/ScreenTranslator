@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/languagecodes.h"
+#include "languagecodes.h"
 
 TEST(LanguageCodesTest, IdForNameReturnsCorrectIdForKnownName) {
   EXPECT_EQ(LanguageCodes::idForName("English"), "eng");
@@ -17,7 +17,6 @@ TEST(LanguageCodesTest, IdForTesseractReturnsCorrectIdForKnownTesseractCode) {
   EXPECT_EQ(LanguageCodes::idForTesseract("eng"), "eng");
   EXPECT_EQ(LanguageCodes::idForTesseract("fra"), "fra");
   EXPECT_EQ(LanguageCodes::idForTesseract("chi_sim"), "chi_sim");
-  // "smo" has empty tesseract code in the map, so it maps back if we search for "", but "" maps to many things or nothing specific in find_if. Let's pick standard ones.
 }
 
 TEST(LanguageCodesTest, IdForTesseractReturnsInputForUnknownTesseractCode) {
@@ -58,7 +57,6 @@ TEST(LanguageCodesTest, NameReturnsIdForUnknownId) {
 TEST(LanguageCodesTest, AllIdsReturnsNonEmptyVector) {
   std::vector<LanguageId> ids = LanguageCodes::allIds();
   EXPECT_FALSE(ids.empty());
-  // Check that some known IDs are in the vector
   EXPECT_NE(std::find(ids.begin(), ids.end(), "eng"), ids.end());
   EXPECT_NE(std::find(ids.begin(), ids.end(), "fra"), ids.end());
   EXPECT_NE(std::find(ids.begin(), ids.end(), "chi_sim"), ids.end());
@@ -66,4 +64,38 @@ TEST(LanguageCodesTest, AllIdsReturnsNonEmptyVector) {
 
 TEST(LanguageCodesTest, AnyLanguageIdReturnsAny) {
   EXPECT_EQ(LanguageCodes::anyLanguageId(), "any");
+}
+
+TEST(LanguageCodesTest, Iso639_1_ValidIds)
+{
+  EXPECT_EQ(LanguageCodes::iso639_1("afr"), "af");
+  EXPECT_EQ(LanguageCodes::iso639_1("sqi"), "sq");
+  EXPECT_EQ(LanguageCodes::iso639_1("eng"), "en");
+}
+
+TEST(LanguageCodesTest, Iso639_1_UnknownId)
+{
+  EXPECT_EQ(LanguageCodes::iso639_1("unknown"), "unknown");
+}
+
+TEST(LanguageCodesTest, Tesseract_ValidIds)
+{
+  EXPECT_EQ(LanguageCodes::tesseract("afr"), "afr");
+  EXPECT_EQ(LanguageCodes::tesseract("eng"), "eng");
+}
+
+TEST(LanguageCodesTest, Tesseract_UnknownId)
+{
+  EXPECT_EQ(LanguageCodes::tesseract("unknown"), "unknown");
+}
+
+TEST(LanguageCodesTest, Name_ValidIds)
+{
+  EXPECT_EQ(LanguageCodes::name("afr"), "Afrikaans");
+  EXPECT_EQ(LanguageCodes::name("eng"), "English");
+}
+
+TEST(LanguageCodesTest, Name_UnknownId)
+{
+  EXPECT_EQ(LanguageCodes::name("unknown"), "unknown");
 }
