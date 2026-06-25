@@ -3031,7 +3031,11 @@ static FILE *mz_freopen(const char *pPath, const char *pMode, FILE *pStream)
 #define MZ_DELETE_FILE remove
 #elif defined(__TINYC__)
 #ifndef MINIZ_NO_TIME
+#if defined(__linux) || defined(__linux__)
+#include <utime.h>
+#else
 #include <sys/utime.h>
+#endif
 #endif
 #define MZ_FOPEN(f, m) fopen(f, m)
 #define MZ_FCLOSE fclose
