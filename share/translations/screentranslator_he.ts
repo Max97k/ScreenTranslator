@@ -1207,6 +1207,11 @@ Error %2</source>
         <source>Not installed</source>
         <translation>לא מותקן</translation>
     </message>
+    <message>
+        <source>Path is not allowed
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WebPage</name>

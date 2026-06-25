@@ -1256,17 +1256,17 @@ Then set default recognition and translation languages, enable some (or all) tra
 <context>
     <name>SubstitutionsTable</name>
     <message>
-        <location filename="../../src/substitutionstable.cpp" line="81"/>
+        <location filename="../../src/substitutionstable.cpp" line="82"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../../src/substitutionstable.cpp" line="81"/>
+        <location filename="../../src/substitutionstable.cpp" line="82"/>
         <source>Source</source>
         <translation>Исходный текст</translation>
     </message>
     <message>
-        <location filename="../../src/substitutionstable.cpp" line="81"/>
+        <location filename="../../src/substitutionstable.cpp" line="82"/>
         <source>Changed</source>
         <translation>Замена</translation>
     </message>
@@ -1439,14 +1439,22 @@ Most likely they are already in use by another program</source>
         <translation>Установить/Обновить</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="628"/>
+        <location filename="../../src/service/updates.cpp" line="684"/>
+        <location filename="../../src/service/updates.cpp" line="700"/>
+        <location filename="../../src/service/updates.cpp" line="719"/>
+        <source>Path is not allowed
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/service/updates.cpp" line="692"/>
         <source>Directory is not writable
 %1</source>
         <translation>Папка недоступна для записи
 %1</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="657"/>
+        <location filename="../../src/service/updates.cpp" line="733"/>
         <source>Failed to create temp file
 %1
 Error %2</source>
@@ -1455,7 +1463,7 @@ Error %2</source>
 %2</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="665"/>
+        <location filename="../../src/service/updates.cpp" line="741"/>
         <source>Failed to write to temp file
 %1
 Error %2</source>
@@ -1464,7 +1472,7 @@ Error %2</source>
 %2</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="682"/>
+        <location filename="../../src/service/updates.cpp" line="758"/>
         <source>Failed to copy file
 %1
 to %2
@@ -1475,8 +1483,8 @@ Error %3</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="640"/>
-        <location filename="../../src/service/updates.cpp" line="675"/>
+        <location filename="../../src/service/updates.cpp" line="710"/>
+        <location filename="../../src/service/updates.cpp" line="751"/>
         <source>Failed to remove file
 %1
 Error %2</source>
@@ -1485,7 +1493,7 @@ Error %2</source>
 Текст %2</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="650"/>
+        <location filename="../../src/service/updates.cpp" line="726"/>
         <source>Failed to create path
 %1</source>
         <translation>Ошибка создания папки
@@ -1510,14 +1518,14 @@ Error %2</source>
 <context>
     <name>update::Loader</name>
     <message>
-        <location filename="../../src/service/updates.cpp" line="576"/>
+        <location filename="../../src/service/updates.cpp" line="603"/>
         <source>Failed to download file
 %1. Error %2</source>
         <translation>Ошибка скачивания файла
 %1. Текст %2</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="584"/>
+        <location filename="../../src/service/updates.cpp" line="611"/>
         <source>Empty data downloaded from
 %1</source>
         <translation>Пустой файл из
@@ -1542,27 +1550,27 @@ Error %2</source>
         <translation>Нет разобранных данных</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="481"/>
+        <location filename="../../src/service/updates.cpp" line="508"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="481"/>
+        <location filename="../../src/service/updates.cpp" line="508"/>
         <source>State</source>
         <translation>Состояние</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="482"/>
+        <location filename="../../src/service/updates.cpp" line="509"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="482"/>
+        <location filename="../../src/service/updates.cpp" line="509"/>
         <source>Version</source>
         <translation>Версия</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="483"/>
+        <location filename="../../src/service/updates.cpp" line="510"/>
         <source>Progress</source>
         <translation>Прогресс</translation>
     </message>
@@ -1570,14 +1578,14 @@ Error %2</source>
 <context>
     <name>update::Updater</name>
     <message>
-        <location filename="../../src/service/updates.cpp" line="850"/>
+        <location filename="../../src/service/updates.cpp" line="928"/>
         <source>Empty data unpacked from
 %1</source>
         <translation>Пустой файл распакован из
 %1</translation>
     </message>
     <message>
-        <location filename="../../src/service/updates.cpp" line="916"/>
+        <location filename="../../src/service/updates.cpp" line="995"/>
         <source>Update all</source>
         <translation>Обновить все</translation>
     </message>
