@@ -60,8 +60,6 @@ Manager::Manager()
   if (settings_->showMessageOnStart)
     tray_->showInformation(QObject::tr("Screen translator started"));
 
-  // warnIfOutdated();
-
   QObject::connect(updater_.get(), &update::Updater::error,  //
                    tray_.get(), &TrayIcon::showError);
   QObject::connect(updater_.get(), &update::Updater::updatesAvailable,  //
@@ -80,22 +78,6 @@ Manager::~Manager()
     settings_->saveLastUpdateCheck();
     LTRACE() << "saved last update time";
   }
-}
-
-void Manager::warnIfOutdated()
-{
-  const auto now = QDateTime::currentDateTime();
-  const auto binaryInfo = QFileInfo(QApplication::applicationFilePath());
-  const auto date = binaryInfo.fileTime(QFile::FileTime::FileBirthTime);
-  const auto deadlineDays = 90;
-  if (date.daysTo(now) < deadlineDays)
-    return;
-  const auto updateDate = settings_->lastUpdateCheck;
-  if (updateDate.isValid() && updateDate.daysTo(now) < deadlineDays)
-    return;
-  tray_->showInformation(
-      QObject::tr("Current version might be outdated.\n"
-                  "Check for updates to silence this warning"));
 }
 
 void Manager::updateSettings()
