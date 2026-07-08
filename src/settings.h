@@ -69,7 +69,6 @@ public:
   QString sourceLanguage{"eng"};
 
   bool doTranslation{true};
-  bool ignoreSslErrors{false};
   LanguageId targetLanguage{"rus"};
   std::chrono::seconds translationTimeout{15};
   QString translatorsPath;

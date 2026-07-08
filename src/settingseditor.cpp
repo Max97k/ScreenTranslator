@@ -266,7 +266,6 @@ Settings SettingsEditor::settings() const
   settings.userSubstitutions = ui->userSubstitutionsTable->substitutions();
 
   settings.doTranslation = ui->doTranslationCheck->isChecked();
-  settings.ignoreSslErrors = ui->ignoreSslCheck->isChecked();
   settings.translationTimeout =
       std::chrono::seconds(ui->translateTimeoutSpin->value());
   settings.targetLanguage =
@@ -327,7 +326,6 @@ void SettingsEditor::setSettings(const Settings &settings)
   ui->userSubstitutionsTable->setSubstitutions(settings.userSubstitutions);
 
   ui->doTranslationCheck->setChecked(settings.doTranslation);
-  ui->ignoreSslCheck->setChecked(settings.ignoreSslErrors);
   ui->translateTimeoutSpin->setValue(settings.translationTimeout.count());
   ui->translateLangCombo->setCurrentText(
       LanguageCodes::name(settings.targetLanguage));
