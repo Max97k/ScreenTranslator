@@ -10,7 +10,8 @@ HEADERS += \
   ../src/service/updates.h \
   ../src/service/widgetstate.h \
   ../src/task.h \
-  mocknetworkaccessmanager.h
+  mocknetworkaccessmanager.h \
+  ../src/ocr/winocr.h
 
 SOURCES += \
   ../external/gtest/gtest-all.cc \
@@ -28,4 +29,6 @@ SOURCES += \
   widgetstate_test.cpp \
   mocknetworkaccessmanager.cpp \
   translation_pipeline_test.cpp \
-  capturearea_test.cpp
+  capturearea_test.cpp \
+  ../src/ocr/winocr.cpp \
+  winocr_test.cpp
