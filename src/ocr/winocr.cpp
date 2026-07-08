@@ -83,15 +83,27 @@ QStringList WinOcr::availableLanguageNames(const QString &path)
 #if defined(Q_OS_WIN)
   try {
     auto langs = OcrEngine::AvailableRecognizerLanguages();
+
+    const auto allIds = LanguageCodes::allIds();
+    struct LangMap {
+        QString iso;
+        QString name;
+    };
+    std::vector<LangMap> mapping;
+    mapping.reserve(allIds.size());
+    for (const auto& id : allIds) {
+        mapping.push_back({LanguageCodes::iso639_1(id), LanguageCodes::name(id)});
+    }
+
     for (auto const& lang : langs) {
         QString tag = QString::fromStdWString(std::wstring(lang.LanguageTag()));
         // Attempt to find ScreenTranslator internal language id for this tag
         // Map from iso to name
         // For simplicity, just add the translated name if found, else just add the tag
         bool found = false;
-        for (const auto& id : LanguageCodes::allIds()) {
-            if (LanguageCodes::iso639_1(id) == tag || LanguageCodes::iso639_1(id).startsWith(tag)) {
-                names.append(LanguageCodes::name(id));
+        for (const auto& item : mapping) {
+            if (item.iso == tag || item.iso.startsWith(tag)) {
+                names.append(item.name);
                 found = true;
                 break;
             }
