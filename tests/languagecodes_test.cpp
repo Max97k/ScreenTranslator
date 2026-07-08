@@ -55,7 +55,7 @@ TEST(LanguageCodesTest, NameReturnsIdForUnknownId) {
 }
 
 TEST(LanguageCodesTest, AllIdsReturnsNonEmptyVector) {
-  std::vector<LanguageId> ids = LanguageCodes::allIds();
+  const std::vector<LanguageId>& ids = LanguageCodes::allIds();
   EXPECT_FALSE(ids.empty());
   EXPECT_NE(std::find(ids.begin(), ids.end(), "eng"), ids.end());
   EXPECT_NE(std::find(ids.begin(), ids.end(), "fra"), ids.end());

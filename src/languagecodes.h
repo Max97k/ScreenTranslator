@@ -16,7 +16,7 @@ public:
   static QString iso639_1(const LanguageId& id);
   static QString tesseract(const LanguageId& id);
   static QString name(const LanguageId& id);
-  static std::vector<LanguageId> allIds();
+  static const std::vector<LanguageId>& allIds();
   static LanguageId anyLanguageId();
 
 private:
