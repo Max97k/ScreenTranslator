@@ -31,6 +31,7 @@ SOURCES += \
   capturearea_test.cpp
 
 win32 {
+  DEFINES += _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
   HEADERS += ../src/ocr/winocr.h
   SOURCES += \
     ../src/ocr/winocr.cpp \
