@@ -1,22 +1,7 @@
 #include <gtest/gtest.h>
 #include "../src/commonmodels.h"
-#include "../src/ocr/winocr.h"
-#include "../src/translate/translator.h"
 #include <QStringListModel>
 #include <QStringList>
-
-// Stubs for static methods used by CommonModels
-QStringList WinOcr::availableLanguageNames(const QString &path) {
-    return {"Zzz", "Aaa", "Mmm"};
-}
-
-QStringList Translator::availableTranslators(const QString &path) {
-    return {"Yyy", "Bbb", "Nnn"};
-}
-
-QStringList Translator::availableLanguageNames() {
-    return {"Xxx", "Ccc", "Ooo"};
-}
 
 TEST(CommonModelsTest, UpdatePopulatesAndSortsModels) {
     CommonModels models;

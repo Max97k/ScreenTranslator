@@ -1,9 +1,11 @@
 CONFIG += c++17
 CONFIG -= app_bundle
 
+win32:DEFINES += _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
+
 QT += widgets network testlib
 
-INCLUDEPATH += $$PWD/../external $$PWD/../src/service $$PWD/../src $$PWD/../src/capture
+INCLUDEPATH += $$PWD/../external $$PWD/../src/service $$PWD/../src $$PWD/../src/capture $$PWD/../src/ocr $$PWD/../src/translate
 
 HEADERS += \
   ../src/languagecodes.h \
@@ -31,4 +33,5 @@ SOURCES += \
   mocknetworkaccessmanager.cpp \
   translation_pipeline_test.cpp \
   capturearea_test.cpp \
-  commonmodels_test.cpp
+  commonmodels_test.cpp \
+  mock_commonmodels_deps.cpp
