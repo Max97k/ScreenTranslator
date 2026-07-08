@@ -23,10 +23,10 @@ void handleGeometry(QSettings *settings, QWidget *widget, Action action)
 
   const auto name = widget->objectName() + QLatin1String("_geometry");
   if (action == Action::Save) {
-    settings->setValue(name, widget->geometry());
+    settings->setValue(name, widget->saveGeometry());
   } else {
     if (settings->contains(name))
-      widget->setGeometry(settings->value(name).toRect());
+      widget->restoreGeometry(settings->value(name).toByteArray());
   }
 }
 
