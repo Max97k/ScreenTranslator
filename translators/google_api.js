@@ -24,10 +24,7 @@ function translate(text, from, to) {
   httpGetAsync(url, function (response) {
     console.log('received', response);
     let object = JSON.parse(response);
-    let result = '';
-    object[0].forEach(function (element) {
-      result += element[0] + ' ';
-    });
+    let result = object[0].reduce((acc, element) => acc + element[0] + ' ', '');
     proxy.setTranslated(result);
   });
 }
