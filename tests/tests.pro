@@ -29,3 +29,10 @@ SOURCES += \
   mocknetworkaccessmanager.cpp \
   translation_pipeline_test.cpp \
   capturearea_test.cpp
+
+win32 {
+  HEADERS += ../src/ocr/winocr.h
+  SOURCES += \
+    ../src/ocr/winocr.cpp \
+    winocr_test.cpp
+}
