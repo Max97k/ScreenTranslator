@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QNetworkProxy>
 #include <QThread>
+#include <QTimer>
 #include <QtConcurrent/QtConcurrent>
 
 namespace
@@ -331,13 +332,17 @@ void Manager::capture()
 
   tray_->blockActions(true);
 
+  auto doCapture = [this]() {
+    capturer_->capture();
+    tray_->setRepeatCaptureEnabled(true);
+  };
+
   if (representer_->isVisible()) {
     representer_->hide();
-    QThread::usleep(resultHideWaitUs);
+    QTimer::singleShot(resultHideWaitUs / 1000, doCapture);
+  } else {
+    doCapture();
   }
-
-  capturer_->capture();
-  tray_->setRepeatCaptureEnabled(true);
 }
 
 void Manager::repeatCapture()
@@ -351,12 +356,16 @@ void Manager::captureLocked()
 {
   SOFT_ASSERT(capturer_, return );
 
+  auto doCaptureLocked = [this]() {
+    capturer_->captureLocked();
+  };
+
   if (representer_->isVisible()) {
     representer_->hide();
-    QThread::usleep(resultHideWaitUs);
+    QTimer::singleShot(resultHideWaitUs / 1000, doCaptureLocked);
+  } else {
+    doCaptureLocked();
   }
-
-  capturer_->captureLocked();
 }
 
 void Manager::settings()
