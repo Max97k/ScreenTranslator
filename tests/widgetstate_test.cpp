@@ -57,19 +57,8 @@ TEST_F(WidgetStateTest, BasicGeometrySaveRestore) {
     service::WidgetState::restore(&widget);
 
     // Verify geometry was restored
-    // On Windows, the geometry restoration might not match pixel-perfect for unshown widgets
-    // due to window frame adjustments, but we can verify it at least read some value.
-    // For offscreen platform it's exact. For others, it might adjust it.
-    // To fix Windows CI test failure where it restores to default size instead,
-    // we need to ensure the settings actually contain the value first.
-    QSettings checkSettings;
-    checkSettings.beginGroup("GUI");
-    if (checkSettings.contains("TestWidget_geometry")) {
-        // Only enforce exact match if settings engine successfully stored the Rect
-        // otherwise let it pass as platform differences with headless QSettings handling
-        // apply here.
-        EXPECT_EQ(widget.geometry(), QRect(10, 20, 100, 200));
-    }
+    // Using saveGeometry/restoreGeometry handles offscreen and different platforms properly
+    EXPECT_EQ(widget.geometry(), QRect(10, 20, 100, 200));
 }
 
 TEST_F(WidgetStateTest, SplitterStateSaveRestore) {
