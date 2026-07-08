@@ -27,5 +27,10 @@ SOURCES += \
   updates_test.cpp \
   widgetstate_test.cpp \
   mocknetworkaccessmanager.cpp \
+  ../src/correct/correctorworker.cpp \
+  ../src/correct/hunspellcorrector.cpp \
   translation_pipeline_test.cpp \
-  capturearea_test.cpp
+  capturearea_test.cpp \
+  correctorworker_test.cpp
+LIBS += -lhunspell
+HEADERS += ../src/correct/correctorworker.h ../src/correct/hunspellcorrector.h
