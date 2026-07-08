@@ -43,7 +43,6 @@ const QString qs_useHunspell = "useHunspell";
 
 const QString qs_translationGroup = "Translation";
 const QString qs_doTranslation = "doTranslation";
-const QString qs_ignoreSslErrors = "ignoreSslErrors";
 const QString qs_translationLanguage = "translation_language";
 const QString qs_translationTimeout = "translation_timeout";
 const QString qs_translators = "translators";
@@ -183,7 +182,6 @@ Settings& Settings::operator=(const Settings& other)
   tessdataPath = other.tessdataPath;
   sourceLanguage = other.sourceLanguage;
   doTranslation = other.doTranslation;
-  ignoreSslErrors = other.ignoreSslErrors;
   targetLanguage = other.targetLanguage;
   translationTimeout = other.translationTimeout;
   translatorsPath = other.translatorsPath;
@@ -296,7 +294,6 @@ void Settings::saveTranslation(QSettings& settings) const
   settings.beginGroup(qs_translationGroup);
 
   settings.setValue(qs_doTranslation, doTranslation);
-  settings.setValue(qs_ignoreSslErrors, ignoreSslErrors);
   settings.setValue(qs_translationLanguage, targetLanguage);
   settings.setValue(qs_translationTimeout, int(translationTimeout.count()));
   settings.setValue(qs_translators, translators);
@@ -394,8 +391,6 @@ void Settings::loadTranslation(QSettings& settings)
   settings.beginGroup(qs_translationGroup);
 
   doTranslation = settings.value(qs_doTranslation, doTranslation).toBool();
-  ignoreSslErrors =
-      settings.value(qs_ignoreSslErrors, ignoreSslErrors).toBool();
   targetLanguage =
       settings.value(qs_translationLanguage, targetLanguage).toString();
   translationTimeout = std::chrono::seconds(
