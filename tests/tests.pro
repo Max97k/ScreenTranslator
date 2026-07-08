@@ -7,6 +7,7 @@ INCLUDEPATH += $$PWD/../external $$PWD/../src/service $$PWD/../src $$PWD/../src/
 
 HEADERS += \
   ../src/languagecodes.h \
+  ../src/substitutionstable.h \
   ../src/service/updates.h \
   ../src/service/widgetstate.h \
   ../src/task.h \
@@ -14,6 +15,7 @@ HEADERS += \
 
 SOURCES += \
   ../external/gtest/gtest-all.cc \
+  ../src/substitutionstable.cpp \
   ../src/languagecodes.cpp \
   ../src/service/geometryutils.cpp \
   ../src/service/updates.cpp \
@@ -28,4 +30,5 @@ SOURCES += \
   widgetstate_test.cpp \
   mocknetworkaccessmanager.cpp \
   translation_pipeline_test.cpp \
-  capturearea_test.cpp
+  capturearea_test.cpp \
+  substitutionstable_test.cpp
