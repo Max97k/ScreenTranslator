@@ -35,6 +35,16 @@ private:
   void updateModels();
   void validateSettings();
 
+  void setupConnections();
+  void setupPages();
+  void setupGeneral();
+  void setupRecognition();
+  void setupCorrection();
+  void setupTranslation();
+  void setupRepresentation();
+  void setupUpdates();
+  void setupAbout();
+
   Ui::SettingsEditor *ui;
   Manager &manager_;
   update::Updater &updater_;
