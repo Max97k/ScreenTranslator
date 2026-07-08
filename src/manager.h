@@ -33,7 +33,6 @@ private:
   void setupUpdates(const Settings &settings);
   bool setupTrace(bool isOn);
   void finishTask(const TaskPtr &task);
-  void warnIfOutdated();
 
   std::unique_ptr<CommonModels> models_;
   std::unique_ptr<Settings> settings_;
