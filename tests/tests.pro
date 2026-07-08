@@ -4,6 +4,8 @@ CONFIG -= app_bundle
 
 QT += widgets network testlib
 
+win32:LIBS += -lwindowsapp
+
 INCLUDEPATH += $$PWD/../external $$PWD/../src/service $$PWD/../src $$PWD/../src/capture
 
 HEADERS += \
