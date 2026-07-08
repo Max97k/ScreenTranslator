@@ -251,11 +251,14 @@ QString LanguageCodes::name(const LanguageId &id)
   return it != codes_.cend() ? QObject::tr(it->second.name) : id;
 }
 
-std::vector<LanguageId> LanguageCodes::allIds()
+const std::vector<LanguageId>& LanguageCodes::allIds()
 {
-  std::vector<LanguageId> result;
-  result.reserve(codes_.size());
-  for (const auto &code : codes_) result.push_back(code.first);
+  static const std::vector<LanguageId> result = [] {
+    std::vector<LanguageId> r;
+    r.reserve(codes_.size());
+    for (const auto &code : codes_) r.push_back(code.first);
+    return r;
+  }();
   return result;
 }
 
