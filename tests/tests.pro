@@ -10,10 +10,12 @@ HEADERS += \
   ../src/service/updates.h \
   ../src/service/widgetstate.h \
   ../src/task.h \
+  ../src/commonmodels.h \
   mocknetworkaccessmanager.h
 
 SOURCES += \
   ../external/gtest/gtest-all.cc \
+  ../src/commonmodels.cpp \
   ../src/languagecodes.cpp \
   ../src/service/geometryutils.cpp \
   ../src/service/updates.cpp \
@@ -28,4 +30,5 @@ SOURCES += \
   widgetstate_test.cpp \
   mocknetworkaccessmanager.cpp \
   translation_pipeline_test.cpp \
-  capturearea_test.cpp
+  capturearea_test.cpp \
+  commonmodels_test.cpp

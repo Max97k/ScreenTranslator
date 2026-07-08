@@ -1,7 +1,7 @@
 #include "commonmodels.h"
 #include "settings.h"
-#include "winocr.h"
-#include "translator.h"
+#include "ocr/winocr.h"
+#include "translate/translator.h"
 
 CommonModels::CommonModels()
   : sourceLanguageModel_(std::make_unique<QStringListModel>())
