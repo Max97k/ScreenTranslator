@@ -117,14 +117,16 @@ TEST_F(SettingsValidatorTest, Check_TranslationDisabled_IgnoresTranslationErrors
 TEST_F(SettingsValidatorTest, Correct_NoChanges) {
     bool changed = validator.correct(settings, models);
     EXPECT_FALSE(changed);
-    EXPECT_EQ(settings.translators, QStringList() << "Google Cloud API");
+    ASSERT_EQ(settings.translators.size(), 1);
+    EXPECT_EQ(settings.translators[0], "Google Cloud API");
 }
 
 TEST_F(SettingsValidatorTest, Correct_AutoFillTranslators) {
     settings.translators.clear(); // Empty translators, but translation is enabled
     bool changed = validator.correct(settings, models);
     EXPECT_TRUE(changed);
-    EXPECT_EQ(settings.translators, QStringList() << "Google Cloud API");
+    ASSERT_EQ(settings.translators.size(), 1);
+    EXPECT_EQ(settings.translators[0], "Google Cloud API");
 }
 
 TEST_F(SettingsValidatorTest, Correct_AutoFillTranslators_IgnoresIfNoModelsAvailable) {
