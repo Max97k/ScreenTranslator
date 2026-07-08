@@ -29,3 +29,4 @@ SOURCES += \
   mocknetworkaccessmanager.cpp \
   translation_pipeline_test.cpp \
   capturearea_test.cpp
+SOURCES += settingsvalidator_test.cpp ../src/settingsvalidator.cpp
