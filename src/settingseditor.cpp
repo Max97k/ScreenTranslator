@@ -34,110 +34,135 @@ SettingsEditor::SettingsEditor(Manager &manager, update::Updater &updater)
 {
   ui->setupUi(this);
 
+  setupConnections();
+  setupPages();
+  setupGeneral();
+  setupRecognition();
+  setupCorrection();
+  setupTranslation();
+  setupRepresentation();
+  setupUpdates();
+  setupAbout();
+
+  new service::WidgetState(this);
+}
+
+void SettingsEditor::setupConnections()
+{
   connect(ui->buttonBox, &QDialogButtonBox::clicked,  //
           this, &SettingsEditor::handleButtonBoxClicked);
 
   connect(ui->portable, &QCheckBox::toggled,  //
           this, &SettingsEditor::updateState);
+}
 
+void SettingsEditor::setupPages()
+{
+  struct Info {
+    QString title;
+    QString description;
+  };
+
+  QMap<Page, Info> names{
+      {Page::General,
+       {tr("General"), tr("This page contains general program settings")}},
+
+      {Page::Recognition,
+       {tr("Recognition"),
+        tr("This page contains text recognition settings. "
+           "It shows the available languages that program can convert from "
+           "image to text")}},
+
+      {Page::Correction,
+       {tr("Correction"),
+        tr("This page contains recognized text correction settings. "
+           "It allows to fix some errors after recognition.\n"
+           "Hunspell searches for words that are similar to recognized ones "
+           "in its dictionary.\n"
+           "User correction allows to manually fix some frequently "
+           "happening mistakes.\n"
+           "User correction occurs before hunspell correction if both "
+           "are enabled")}},
+
+      {Page::Translation,
+       {tr("Translation"),
+        tr("This page contains settings, related to translation of the "
+           "recognized text. "
+           "Translation is done via enabled (checked) translation services. "
+           "If one fails, then second one will be used and so on. "
+           "If translator hangs it will be treated as failed after "
+           "given timeout")}},
+
+      {Page::Representation,
+       {tr("Representation"),
+        tr("This page contains result representation settings")}},
+
+      {Page::Update,
+       {tr("Update"),
+        tr("This page allow to install/update/remove program resources")}},
+
+      {Page::Help, {tr("Help"), tr("")}},
+  };
+
+  for (const auto &i : names) {
+    const auto error = QString();
+    pageModel_->appendRow({new QStandardItem(i.title),
+                           new QStandardItem(i.description),
+                           new QStandardItem(error)});
+  }
+  ui->pagesList->setModel(pageModel_);
+  ui->pagesList->setModelColumn(int(PageColumn::Name));
+  auto selection = ui->pagesList->selectionModel();
+  connect(selection, &QItemSelectionModel::currentRowChanged,  //
+          this, &SettingsEditor::updateCurrentPage);
+  selection->select(pageModel_->index(0, 0),
+                    QItemSelectionModel::SelectCurrent);
+}
+
+void SettingsEditor::setupGeneral()
+{
   ui->runAtSystemStart->setEnabled(service::RunAtSystemStart::isAvailable());
 
-  {
-    struct Info {
-      QString title;
-      QString description;
-    };
+  QMap<ProxyType, QString> proxyTypes;
+  proxyTypes.insert(ProxyType::Disabled, tr("Disabled"));
+  proxyTypes.insert(ProxyType::System, tr("System"));
+  proxyTypes.insert(ProxyType::Socks5, tr("SOCKS 5"));
+  proxyTypes.insert(ProxyType::Http, tr("HTTP"));
+  ui->proxyTypeCombo->addItems(proxyTypes.values());
 
-    QMap<Page, Info> names{
-        {Page::General,
-         {tr("General"), tr("This page contains general program settings")}},
+  QRegExp urlRegexp(
+      R"(^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$)");
+  ui->proxyHostEdit->setValidator(
+      new QRegExpValidator(urlRegexp, ui->proxyHostEdit));
 
-        {Page::Recognition,
-         {tr("Recognition"),
-          tr("This page contains text recognition settings. "
-             "It shows the available languages that program can convert from "
-             "image to text")}},
+  ui->proxyPassEdit->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+}
 
-        {Page::Correction,
-         {tr("Correction"),
-          tr("This page contains recognized text correction settings. "
-             "It allows to fix some errors after recognition.\n"
-             "Hunspell searches for words that are similar to recognized ones "
-             "in its dictionary.\n"
-             "User correction allows to manually fix some frequently "
-             "happening mistakes.\n"
-             "User correction occurs before hunspell correction if both "
-             "are enabled")}},
-
-        {Page::Translation,
-         {tr("Translation"),
-          tr("This page contains settings, related to translation of the "
-             "recognized text. "
-             "Translation is done via enabled (checked) translation services. "
-             "If one fails, then second one will be used and so on. "
-             "If translator hangs it will be treated as failed after "
-             "given timeout")}},
-
-        {Page::Representation,
-         {tr("Representation"),
-          tr("This page contains result representation settings")}},
-
-        {Page::Update,
-         {tr("Update"),
-          tr("This page allow to install/update/remove program resources")}},
-
-        {Page::Help, {tr("Help"), tr("")}},
-    };
-
-    for (const auto &i : names) {
-      const auto error = QString();
-      pageModel_->appendRow({new QStandardItem(i.title),
-                             new QStandardItem(i.description),
-                             new QStandardItem(error)});
-    }
-    ui->pagesList->setModel(pageModel_);
-    ui->pagesList->setModelColumn(int(PageColumn::Name));
-    auto selection = ui->pagesList->selectionModel();
-    connect(selection, &QItemSelectionModel::currentRowChanged,  //
-            this, &SettingsEditor::updateCurrentPage);
-    selection->select(pageModel_->index(0, 0),
-                      QItemSelectionModel::SelectCurrent);
-  }
-
-  {
-    QMap<ProxyType, QString> proxyTypes;
-    proxyTypes.insert(ProxyType::Disabled, tr("Disabled"));
-    proxyTypes.insert(ProxyType::System, tr("System"));
-    proxyTypes.insert(ProxyType::Socks5, tr("SOCKS 5"));
-    proxyTypes.insert(ProxyType::Http, tr("HTTP"));
-    ui->proxyTypeCombo->addItems(proxyTypes.values());
-
-    QRegExp urlRegexp(
-        R"(^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$)");
-    ui->proxyHostEdit->setValidator(
-        new QRegExpValidator(urlRegexp, ui->proxyHostEdit));
-
-    ui->proxyPassEdit->setEchoMode(QLineEdit::PasswordEchoOnEdit);
-  }
-
-  // recognition
+void SettingsEditor::setupRecognition()
+{
   ui->tesseractLangCombo->setModel(models_.sourceLanguageModel());
+}
 
-  // correction
+void SettingsEditor::setupCorrection()
+{
   ui->userSubstitutionsTable->setEnabled(ui->useUserSubstitutions->isChecked());
   ui->userSubstitutionsTable->setSourceLanguageModel(
       models_.sourceLanguageModel());
   connect(ui->useUserSubstitutions, &QCheckBox::toggled,  //
           ui->userSubstitutionsTable, &QTableWidget::setEnabled);
+}
 
-  // translation
+void SettingsEditor::setupTranslation()
+{
   ui->translatorHint->setText(
       tr("<b>NOTE! Some translators might require the translation window to be "
          "visible. You can make it using the \"Show translator\" entry "
          "in the tray icon's context menu</b>"));
   ui->translateLangCombo->setModel(models_.targetLanguageModel());
+}
 
-  // representation
+void SettingsEditor::setupRepresentation()
+{
   ui->fontColor->setAutoFillBackground(true);
   ui->backgroundColor->setAutoFillBackground(true);
   ui->backgroundColor->setText(tr("Sample text"));
@@ -163,69 +188,69 @@ SettingsEditor::SettingsEditor(Manager &manager, update::Updater &updater)
             pickColor(ui->backgroundColor);
             updateResultFont();
           });
+}
 
-  // updates
+void SettingsEditor::setupUpdates()
+{
   ui->updatesView->header()->setObjectName("updatesHeader");
   updater_.initView(ui->updatesView);
   connect(&updater_, &update::Updater::updated,  //
           this, &SettingsEditor::updateState);
   connect(ui->checkUpdates, &QPushButton::clicked,  //
           &updater_, &update::Updater::checkForUpdates);
+}
 
-  // about
-  {
-    const auto mail = "translator@gres.biz";
-    const QString baseUrl = "https://github.com/OneMoreGres/ScreenTranslator";
-    const auto issues = baseUrl + "/issues";
-    QLocale locale;
-    const auto changelog =
-        baseUrl + "/blob/master/share/Changelog_" +
-        (locale.language() == QLocale::Russian ? "ru" : "en") + ".md";
-    const auto license = baseUrl + "/blob/master/LICENSE.md";
-    const auto help = locale.language() == QLocale::Russian
-                          ? "https://translator.gres.biz/page/download/"
-                          : baseUrl + "/blob/master/README.md";
-    const auto aboutLines = QStringList{
-        QObject::tr(
-            R"(<p>Optical character recognition (OCR) and translation tool</p>)"),
-        QObject::tr(R"(<p>Version: %1</p>)")
-            .arg(QApplication::applicationVersion()),
-        QObject::tr(R"(<p>Setup instructions: <a href="%1">%1</a></p>)")
-            .arg(help),
-        QObject::tr(R"(<p>Changelog: <a href="%1">%2</a></p>)")
-            .arg(changelog, QUrl(changelog).fileName()),
-        QObject::tr(R"(<p>License: <a href="%3">MIT</a></p>)").arg(license),
-        QObject::tr(R"(<p>Author: Gres (<a href="mailto:%1">%1</a>)</p>)")
-            .arg(mail),
-        QObject::tr(R"(<p>Issues: <a href="%1">%1</a></p>)").arg(issues),
-    };
+void SettingsEditor::setupAbout()
+{
+  const auto mail = "translator@gres.biz";
+  const QString baseUrl = "https://github.com/OneMoreGres/ScreenTranslator";
+  const auto issues = baseUrl + "/issues";
+  QLocale locale;
+  const auto changelog =
+      baseUrl + "/blob/master/share/Changelog_" +
+      (locale.language() == QLocale::Russian ? "ru" : "en") + ".md";
+  const auto license = baseUrl + "/blob/master/LICENSE.md";
+  const auto help = locale.language() == QLocale::Russian
+                        ? "https://translator.gres.biz/page/download/"
+                        : baseUrl + "/blob/master/README.md";
+  const auto aboutLines = QStringList{
+      QObject::tr(
+          R"(<p>Optical character recognition (OCR) and translation tool</p>)"),
+      QObject::tr(R"(<p>Version: %1</p>)")
+          .arg(QApplication::applicationVersion()),
+      QObject::tr(R"(<p>Setup instructions: <a href="%1">%1</a></p>)")
+          .arg(help),
+      QObject::tr(R"(<p>Changelog: <a href="%1">%2</a></p>)")
+          .arg(changelog, QUrl(changelog).fileName()),
+      QObject::tr(R"(<p>License: <a href="%3">MIT</a></p>)").arg(license),
+      QObject::tr(R"(<p>Author: Gres (<a href="mailto:%1">%1</a>)</p>)")
+          .arg(mail),
+      QObject::tr(R"(<p>Issues: <a href="%1">%1</a></p>)").arg(issues),
+  };
 
-    ui->aboutLabel->setText(aboutLines.join('\n'));
-    ui->aboutLabel->setTextFormat(Qt::RichText);
-    ui->aboutLabel->setOpenExternalLinks(true);
+  ui->aboutLabel->setText(aboutLines.join('\n'));
+  ui->aboutLabel->setTextFormat(Qt::RichText);
+  ui->aboutLabel->setOpenExternalLinks(true);
 
-    ui->helpLabel->setText(
-        tr("The program workflow consists of the following steps:\n"
-           "1. Selection on the screen area\n"
-           "2. Recognition of the selected area\n"
-           "3. Correction of the recognized text (optional)\n"
-           "4. Translation of the corrected text (optional)\n"
-           "User interaction is only required for step 1.\n"
-           "Steps 2, 3 and 4 require additional data that can be "
-           "downloaded from "
-           "the updates page.\n"
-           "\n"
-           "At first start, go to the updates page and install desired "
-           "recognition languages and translators and, optionally, "
-           "hunspell "
-           "dictionaries.\n"
-           "Then set default recognition and translation languages, "
-           "enable some "
-           "(or all) translators and the \"translate text\" setting, "
-           "if needed."));
-  }
-
-  new service::WidgetState(this);
+  ui->helpLabel->setText(
+      tr("The program workflow consists of the following steps:\n"
+         "1. Selection on the screen area\n"
+         "2. Recognition of the selected area\n"
+         "3. Correction of the recognized text (optional)\n"
+         "4. Translation of the corrected text (optional)\n"
+         "User interaction is only required for step 1.\n"
+         "Steps 2, 3 and 4 require additional data that can be "
+         "downloaded from "
+         "the updates page.\n"
+         "\n"
+         "At first start, go to the updates page and install desired "
+         "recognition languages and translators and, optionally, "
+         "hunspell "
+         "dictionaries.\n"
+         "Then set default recognition and translation languages, "
+         "enable some "
+         "(or all) translators and the \"translate text\" setting, "
+         "if needed."));
 }
 
 SettingsEditor::~SettingsEditor()
