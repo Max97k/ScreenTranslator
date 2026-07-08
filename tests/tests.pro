@@ -32,6 +32,7 @@ SOURCES += \
 
 win32 {
   DEFINES += _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
+  LIBS += -lwindowsapp
   HEADERS += ../src/ocr/winocr.h
   SOURCES += \
     ../src/ocr/winocr.cpp \
