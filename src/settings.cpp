@@ -57,19 +57,6 @@ const QString qs_backgroundColor = "backgroundColor";
 const QString qs_showRecognized = "showRecognized";
 const QString qs_showCaptured = "showCaptured";
 
-QString shuffle(const QString& source)
-{
-  if (source.isEmpty()) {
-    return source;
-  }
-  char encKeys[] = {14, 26, 99, 43};
-  std::string result = source.toStdString();
-  for (size_t i = 0, end = result.size(); i < end; ++i) {
-    result[i] = result[i] ^ encKeys[i % sizeof(encKeys)];
-  }
-  return QString::fromUtf8(result.data());
-}
-
 QStringList packSubstitutions(const Substitutions& source)
 {
   QStringList result;
@@ -264,7 +251,7 @@ void Settings::saveGui(QSettings& settings) const
   settings.setValue(qs_proxyUser, proxyUser);
   settings.setValue(qs_proxySavePassword, proxySavePassword);
   if (proxySavePassword) {
-    settings.setValue(qs_proxyPassword, shuffle(proxyPassword));
+    settings.setValue(qs_proxyPassword, proxyPassword);
   } else {
     settings.remove(qs_proxyPassword);
   }
@@ -359,7 +346,7 @@ void Settings::loadGui(QSettings& settings)
   proxyUser = settings.value(qs_proxyUser, proxyUser).toString();
   proxySavePassword =
       settings.value(qs_proxySavePassword, proxySavePassword).toBool();
-  proxyPassword = shuffle(settings.value(qs_proxyPassword).toString());
+  proxyPassword = settings.value(qs_proxyPassword).toString();
 
   autoUpdateIntervalDays =
       settings.value(qs_autoUpdateType, autoUpdateIntervalDays).toInt();
